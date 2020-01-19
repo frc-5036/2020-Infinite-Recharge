@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.CurvatureDrive;
+import frc.robot.commands.CurvatureDriveFromDrivetrainCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.DrivetrainForCurvatureDrive;
@@ -34,7 +35,10 @@ public class RobotContainer {
   //Commands 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final ArcadeDrive m_arcadeDrive = new ArcadeDrive(m_drivetrain, m_oi);
-  private final CurvatureDrive m_curvatureDriveCommand = new CurvatureDrive(m_curvatureDrive, m_oi);
+  private final CurvatureDriveFromDrivetrainCommand m_curvatureDriveCommnad = new CurvatureDriveFromDrivetrainCommand(m_drivetrain, m_oi);
+
+
+  //private final CurvatureDrive m_curvatureDriveCommand = new CurvatureDrive(m_curvatureDrive, m_oi);
   
 
 

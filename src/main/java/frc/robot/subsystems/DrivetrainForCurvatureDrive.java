@@ -50,6 +50,11 @@ public class DrivetrainForCurvatureDrive extends SubsystemBase {
     drive.curvatureDrive(0, 0, false);
   }
 
+  public void testDrive(double xSpeed, double xRotation, boolean isQuickTurn)
+  {
+    
+  }
+
   @Override
   public void periodic() 
   {
