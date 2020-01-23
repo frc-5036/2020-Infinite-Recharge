@@ -9,6 +9,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.CurvatureDrive;
 import frc.robot.commands.CurvatureDriveFromDrivetrainCommand;
@@ -17,6 +25,9 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.DrivetrainForCurvatureDrive;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+
+import java.util.Arrays;
+import java.util.function.Supplier;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -28,7 +39,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final OI m_oi = new OI();
-  private final Drivetrain m_drivetrain = Drivetrain.createForDrivetrain();
+  private final Drivetrain m_drivetrain = Drivetrain.createForRobot();
   private final DrivetrainForCurvatureDrive m_curvatureDrive = new DrivetrainForCurvatureDrive();
 
 
@@ -65,8 +76,27 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public Command getAutonomousCommand()
+  {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    TrajectoryConfig config = new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION);
+    config.setKinematics(m_drivetrain.getKinematics());
+
+
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(Arrays.asList(new Pose2d(), new Pose2d(1.0, 0, new Rotation2d())), config);
+
+    RamseteController ramseteController = new RamseteController(2.0, 0.7);
+    RamseteCommand ramseteCommand = new RamseteCommand(
+            trajectory,
+            m_drivetrain::getPose,
+            ramseteController,
+            m_drivetrain.getFeedforward(),
+            m_drivetrain.getKinematics(),
+            m_drivetrain::getSpeeds,
+            m_drivetrain.getLeftPIDController(),
+            m_drivetrain.getRightPIDController(),
+            m_drivetrain::setOutput,
+            m_drivetrain);
+    return ramseteCommand;
   }
 }

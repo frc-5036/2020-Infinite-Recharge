@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="navx-java-3.1.400-sources">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../../Public/wpilib/2020/maven/com/kauailabs/navx/frc/navx-java/3.1.400/navx-java-3.1.400.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="https://www.kauailabs.com/dist/frc/2020/navx_frc.json" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../../../Public/wpilib/2020/maven/com/kauailabs/navx/frc/navx-java/3.1.400/navx-java-3.1.400-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

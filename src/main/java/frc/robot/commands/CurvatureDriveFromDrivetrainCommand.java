@@ -34,7 +34,8 @@ public class CurvatureDriveFromDrivetrainCommand extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrupted) {
-
+    public void end(boolean interrupted)
+    {
+        drivetrain.Stop();
     }
 }

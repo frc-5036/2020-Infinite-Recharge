@@ -16,4 +16,11 @@ public class RobotMap
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
 
+
+    //Sensors
+    public static final int RIGHT_ENC_IN = 0;
+    public static final int RIGHT_ENC_OUT = 0;
+    public static final int LEFT_ENC_IN = 0;
+    public static final int LEFT_ENC_OUT = 0;
+
 }
