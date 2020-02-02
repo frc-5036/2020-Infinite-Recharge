@@ -115,8 +115,6 @@ public class Drivetrain implements Subsystem
 
         setBrakeMode();
 
-
-
     }
 
 
