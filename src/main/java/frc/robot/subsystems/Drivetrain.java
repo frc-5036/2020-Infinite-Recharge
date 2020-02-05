@@ -86,8 +86,7 @@ public class Drivetrain implements Subsystem
     public Drivetrain(List<IMotorController> rightMotors, List<IMotorController> leftMotors, Encoder leftEncoder, Encoder rightEncoder, AHRS gyro)
     {
 
-        gyroReset();
-        encoderReset();
+        
 
         this.leftMotors = leftMotors;
         this.rightMotors = rightMotors;
@@ -114,6 +113,8 @@ public class Drivetrain implements Subsystem
 
 
         setBrakeMode();
+        gyroReset();
+        encoderReset();
 
 
 
