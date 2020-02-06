@@ -23,4 +23,11 @@ public class RobotMap
     public static final int LEFT_ENC_IN = 3;
     public static final int LEFT_ENC_OUT = 4;
 
+     // Intake
+     public static final int INTAKE = 0; // Port needs to be changed
+     public static final int INTAKE_IN = 0; // Port needs to be changed   
+     public static final int INTAKE_OUT = 0; // Port needs to be changed
+     public static final int BEAM_BREAKER = 0; // Port needs to be changed
+ 
+
 }
