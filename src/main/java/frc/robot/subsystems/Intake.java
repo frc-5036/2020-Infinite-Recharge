@@ -33,11 +33,13 @@ package frc.robot.subsystems;
 	  List<SpeedController> intakeMotor; 
 	  public VictorSP intake;
 	  DoubleSolenoid intakePiston;
-	  public static DigitalInput beamBreaker;
+	  public DigitalInput beamBreaker;
 	  
 	  public Intake(List<SpeedController> intakeMotor, DoubleSolenoid intakePiston, DigitalInput beamBreaker)
 	  {
-	    this.intakeMotor = intakeMotor;
+		this.intakeMotor = intakeMotor;
+		this.intakePiston = intakePiston;
+		this.beamBreaker = beamBreaker;
 	  }
 
 	  public  Intake createForIntake()
@@ -73,7 +75,7 @@ package frc.robot.subsystems;
 	    return beamBreaker.get();
 	  }
 
-	  public boolean beamBreaker(boolean powerCell)
+	  public void beamBreaker(boolean powerCell)
 	  {
 	    if(powerCell = true)
 	    {
@@ -85,7 +87,6 @@ package frc.robot.subsystems;
 	        intakeIn();
 	      }
 	    }
-	    return powerCell;
 	  }
 
 	  public void Stop()
