@@ -34,8 +34,9 @@ import java.util.Arrays;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final OI m_oi = new OI();
   public final Drivetrain m_drivetrain = Drivetrain.createForRobot();
+
+  private final OI m_oi = new OI();
 
 
 

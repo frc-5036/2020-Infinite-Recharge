@@ -116,8 +116,6 @@ public class Drivetrain implements Subsystem
         gyroReset();
         encoderReset();
 
-
-
     }
 
 
