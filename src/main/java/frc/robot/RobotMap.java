@@ -29,6 +29,10 @@ public class RobotMap
      public static final int INTAKE_IN = 0; // Port needs to be changed   
      public static final int INTAKE_OUT = 0; // Port needs to be changed
      public static final int BEAM_BREAKER = 0; // Port needs to be changed
+
+     //Climber
+     public static final int VICTOR_CLIMBER_MOTOR_1 = 0;// Port needs to be changed
+     public static final int VICTOR_CLIMBER_MOTOR_2 = 0;// Port needs to be changed
  
 
 }
