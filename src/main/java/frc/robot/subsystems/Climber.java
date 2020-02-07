@@ -7,50 +7,62 @@
 
 package frc.robot.subsystems;
 
+import java.util.Arrays;
+import java.util.List;
+
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class Climber extends SubsystemBase {
+public class Climber implements Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public VictorSP climberMotor1;
-  public VictorSP climberMotor2;
 
+  List<SpeedController> climbMotors;
 
-  public Climber()
+  public Climber(List<SpeedController> climbMotors)
   {
-    climberMotor1=new VictorSP (RobotMap.VICTOR_CLIMBER_MOTOR_1);
-    climberMotor2=new VictorSP (RobotMap.VICTOR_CLIMBER_MOTOR_2);
+    this.climbMotors = climbMotors;
 
+  }
+
+  public Climber createForClimber()
+  {
+    VictorSP climberMotor1 = new VictorSP (RobotMap.VICTOR_CLIMBER_MOTOR_1);
+    VictorSP climberMotor2 = new VictorSP (RobotMap.VICTOR_CLIMBER_MOTOR_2);
+
+    return new Climber(Arrays.asList(climberMotor1, climberMotor2));
   }
 
   public void climbUp(double power)
   {
-    climberMotor1.set(power);
-    climberMotor2.set(power);
+    for(SpeedController sc : climbMotors)
+      {
+        sc.set(power);
+      }
   }
 
   public void climbDown (double power)
   {
-    climberMotor1.set(-power);
-    climberMotor2.set(-power);
+    for(SpeedController sc : climbMotors)
+      {
+        sc.set(power);
+      }
   }
 
   public void stop ()
   {
-    climberMotor1.set(0);
-    climberMotor2.set(0);
-
+    for(SpeedController sc : climbMotors)
+    {
+      sc.set(0);
+    }
   }
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+  
 }
