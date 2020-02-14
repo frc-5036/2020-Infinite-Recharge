@@ -33,6 +33,15 @@ public class RobotMap
      //Climber
      public static final int VICTOR_CLIMBER_MOTOR_1 = 0;// Port needs to be changed
      public static final int VICTOR_CLIMBER_MOTOR_2 = 0;// Port needs to be changed
+
+    //Indexer
+    public static final int INDEXER_MOTOR = 0; //Needs to be changed
+
+    //Shooter
+    public static final int SHOOTER_1 = 0;
+    public static final int SHOOTER_2 = 0;
+    public static final int SHOOTER_3 = 0;
+    public static final int SHOOTER_4 = 0;
  
 
 }
