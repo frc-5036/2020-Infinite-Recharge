@@ -9,74 +9,58 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.Extra.Util;
+import frc.robot.Extra.controllerButtons;
+import frc.robot.customInterfaces.DriveController;
 
 /**
  * Add your docs here.
  */
-public class OI 
+public class OI implements DriveController
 {
-    Joystick driverController = new Joystick(RobotMap.DRIVER_CONTROLLER);
-    Joystick operatorController = new Joystick(RobotMap.OPERATOR_CONTROLLER);
+    controllerButtons driverController = new controllerButtons(RobotMap.DRIVER_CONTROLLER);
+    controllerButtons operatorController = new controllerButtons(RobotMap.OPERATOR_CONTROLLER);
 
+
+
+    public OI()
+    {
+
+    }
 
     public double getForward()
     {
-       double forward = driverController.getRawAxis(1); 
-
-       //Deadband 
-       if( forward < 0.3)
-       {
-           return 0;
-       }
-       else
-       {
-           return forward;
-       }
+       double forward = driverController.getLeftAxisY();
+       System.out.println("Calling getForward");
+      //Deadband
+      if( forward < 0.3)
+      {
+          return 0;
+      }
+      else
+      {
+          return forward;
+      }
+        //return Util.handleDeadband(forward, 0.3);
     }
     public double getRotate()
     {
-        double rotate = driverController.getRawAxis(0);
-
-        if(rotate < 0.3)
-        {
-            return 0;
-        }
-        else 
-        {
-            return rotate;
-        }
+        double rotate = driverController.getRightAxisX();
+        if( rotate < 0.3)
+      {
+          return 0;
+      }
+      else
+      {
+          return rotate;
+      }
+       
     }
 
-    //For Curveature Drive (Will prolly get rid of later)
-    public double getCurvatureForward()
+    public boolean getQuickTurn() 
     {
-       double forward = operatorController.getRawAxis(1); 
+        return operatorController.getR1();
+    }
 
-       //Deadband 
-       if( forward < 0.3)
-       {
-           return 0;
-       }
-       else
-       {
-           return forward;
-       }
-    }
-    public double getCurvatureRotate()
-    {
-        double rotate = operatorController.getRawAxis(0);
 
-        if(rotate < 0.3)
-        {
-            return 0;
-        }
-        else 
-        {
-            return rotate;
-        }
-    }
-    public boolean isQuickTurn()
-    {
-        return operatorController.getRawButton(1);//Needs to be changed to be a proper button
-    }
 }

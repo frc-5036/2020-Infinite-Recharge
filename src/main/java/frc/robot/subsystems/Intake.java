@@ -11,6 +11,7 @@ package frc.robot.subsystems;
 	import java.util.List;
 
 	import com.ctre.phoenix.motorcontrol.ControlMode;
+	import com.ctre.phoenix.motorcontrol.IMotorController;
 	import com.fasterxml.jackson.databind.type.ResolvedRecursiveType;
 
 	import edu.wpi.first.vision.VisionRunner.Listener;
@@ -30,30 +31,33 @@ package frc.robot.subsystems;
 	  // Put methods for controlling this subsystem
 	  // here. Call these from Commands.
 
-	  List<SpeedController> intakeMotor; 
-	  public VictorSP intake;
+	  List<SpeedController> intakeMotor;
 	  DoubleSolenoid intakePiston;
 	  public DigitalInput beamBreaker;
 	  
-	  public Intake(List<SpeedController> intakeMotor, DoubleSolenoid intakePiston, DigitalInput beamBreaker)
+	  public Intake(List<SpeedController> intakeMotor, DoubleSolenoid intakePiston)
 	  {
 		this.intakeMotor = intakeMotor;
 		this.intakePiston = intakePiston;
-		this.beamBreaker = beamBreaker;
+		//this.beamBreaker = beamBreaker;
 	  }
 
-	  public  Intake createForIntake()
+	  public static Intake createForIntake()
 	  {
 	    VictorSP intake = new VictorSP(RobotMap.INTAKE);
+	    VictorSP intake2 = new VictorSP(RobotMap.INTAKE_2);
 	    DoubleSolenoid intakePiston = new DoubleSolenoid(RobotMap.INTAKE_IN, RobotMap.INTAKE_OUT);
-	    DigitalInput beamBreaker = new DigitalInput(RobotMap.BEAM_BREAKER);
+	    // DigitalInput beamBreaker = new DigitalInput(RobotMap.BEAM_BREAKER);
 
-	    return new Intake(Arrays.asList(intake), intakePiston, beamBreaker);
+	    return new Intake(Arrays.asList(intake, intake2), intakePiston);
 	  }
 
-	  public void Running(double power)
+	  public void Run(double power)
 	  {
-	    intake.set(power);
+		  for(SpeedController sc : intakeMotor)
+		  {
+			  sc.set(power);
+		  }
 	  }
 	  public void intakeIn()
 	  {
@@ -65,10 +69,10 @@ package frc.robot.subsystems;
 	    intakePiston.set(DoubleSolenoid.Value.kForward);
 	  }
 
-	  public boolean getBeamBreaker()
-	  {
-	    return beamBreaker.get();
-	  }
+	//   public boolean getBeamBreaker()
+	//   {
+	//     return beamBreaker.get();
+	//   }
 
 	  public void beamBreaker(boolean powerCell)
 	  {
@@ -86,7 +90,7 @@ package frc.robot.subsystems;
 
 	  public void Stop()
 	  {
-	    Running(0); 
+	    Run(0);
 	  }
 
 	}

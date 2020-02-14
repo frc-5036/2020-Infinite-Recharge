@@ -16,12 +16,13 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.CurvatureDrive;
+import frc.robot.commands.driveCommands.ArcadeDrive;
+//import frc.robot.commands.driveCommands.CurvatureDrive;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Intake;
 
 import java.util.Arrays;
 
@@ -35,7 +36,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public final Drivetrain m_drivetrain = Drivetrain.createForRobot();
-
+  public final Intake m_intake = Intake.createForIntake();
   private final OI m_oi = new OI();
 
 
@@ -43,7 +44,7 @@ public class RobotContainer {
   //Commands 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final ArcadeDrive m_arcadeDrive = new ArcadeDrive(m_drivetrain, m_oi);
-  private final CurvatureDrive m_curvatureDriveCommnad = new CurvatureDrive(m_drivetrain, m_oi);
+  //private final CurvatureDrive m_curvatureDriveCommand = new CurvatureDrive(m_drivetrain, m_oi);
 
 
   
@@ -55,6 +56,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    m_drivetrain.setDefaultCommand(m_arcadeDrive);
   }
 
   /**

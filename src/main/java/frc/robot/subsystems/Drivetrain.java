@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.*;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,13 +39,11 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class Drivetrain implements Subsystem
-{
-      // Put methods for controlling this subsystem
-      // here. Call these from Commands.
+public class Drivetrain implements Subsystem {
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
 
-
-    //Speed Controllers
+    // Speed Controllers
     List<IMotorController> rightMotors;
     List<IMotorController> leftMotors;
 
@@ -51,21 +51,19 @@ public class Drivetrain implements Subsystem
     private static double kI;
     private static double kD;
 
-
-    //Variable for Curvature Drive Methods
+    // Variable for Curvature Drive Methods
     double mQuickStopAccumulator;
     public static final double THROTTLE_DEADBAND = 0.02;
     private static final double WHEEL_DEADBAND = 0.02;
     private static final double TURN_SENS = 1.0;
 
-    //Sensors
+    // Sensors
 
     Encoder rightEncoder;
     Encoder leftEncoder;
     AHRS gyro;
 
-
-    //Stuff for Pathfinder
+    // Stuff for Pathfinder
     DifferentialDriveKinematics kinematics;
     DifferentialDriveOdometry odometry;
     Pose2d pose;
@@ -74,24 +72,20 @@ public class Drivetrain implements Subsystem
     PIDController leftPIDController;
     PIDController rightPIDController;
 
-
-
     @Override
-    public void periodic()
-    {
+    public void periodic() {
         // This method will be called once per scheduler run
         pose = odometry.update(getHeading(), leftEncoder.getDistance(), rightEncoder.getDistance());
     }
 
-    public Drivetrain(List<IMotorController> rightMotors, List<IMotorController> leftMotors, Encoder leftEncoder, Encoder rightEncoder, AHRS gyro)
-    {
-
-        
+    public Drivetrain(List<IMotorController> rightMotors, List<IMotorController> leftMotors, Encoder leftEncoder,
+            Encoder rightEncoder, AHRS gyro) 
+        {
 
         this.leftMotors = leftMotors;
         this.rightMotors = rightMotors;
 
-        //Sensors
+        // Sensors
         this.leftEncoder = leftEncoder;
         this.rightEncoder = rightEncoder;
 
@@ -101,7 +95,7 @@ public class Drivetrain implements Subsystem
         this.gyro = gyro;
 
         kinematics = new DifferentialDriveKinematics(Constants.TRACK_WIDTH);
-        odometry = new DifferentialDriveOdometry(getHeading()); //Can add a second argument
+        odometry = new DifferentialDriveOdometry(getHeading()); // Can add a second argument
         feedforward = new SimpleMotorFeedforward(Constants.kS, Constants.kV, Constants.kA);
 
         kP = 0;
@@ -111,24 +105,27 @@ public class Drivetrain implements Subsystem
         leftPIDController = new PIDController(kP, kI, kD);
         rightPIDController = new PIDController(kP, kI, kD);
 
-
         setBrakeMode();
         gyroReset();
         encoderReset();
 
     }
 
-
-    public static Drivetrain createForRobot()
+    public static Drivetrain createForRobot() 
     {
         TalonSRX rightFront = new TalonSRX(RobotMap.RIGHT_FRONT_DRIVE);
         TalonSRX leftFront = new TalonSRX(RobotMap.LEFT_FRONT_DRIVE);
+
+        TalonSRX rightMiddle = new TalonSRX(RobotMap.RIGHT_MIDDLE_DRIVE);
+        VictorSPX leftMiddle = new VictorSPX(RobotMap.LEFT_MIDDLE_DRIVE);
+
         TalonSRX rightBack = new TalonSRX(RobotMap.RIGHT_BACK_DRIVE);
-        TalonSRX leftBack = new TalonSRX(RobotMap.LEFT_BACK_DRIVE);
+        VictorSPX leftBack = new VictorSPX(RobotMap.LEFT_BACK_DRIVE);
 
 
         //Setting Right to Reverse
         rightBack.setInverted(true);
+        rightMiddle.setInverted(true);
         rightFront.setInverted(true);
 
         //Sensors
@@ -138,7 +135,7 @@ public class Drivetrain implements Subsystem
         Encoder m_leftEncoder = new Encoder(RobotMap.LEFT_ENC_IN, RobotMap.LEFT_ENC_OUT, false, CounterBase.EncodingType.k4X);
 
 
-        return new Drivetrain(Arrays.asList(rightFront, rightBack), Arrays.asList(leftFront, leftBack), m_leftEncoder, m_rightEncoder, m_gyro);
+        return new Drivetrain(Arrays.asList(rightFront, rightMiddle, rightBack), Arrays.asList(leftFront, leftMiddle, leftBack), m_leftEncoder, m_rightEncoder, m_gyro);
     }
 
     private void setMotors(double power, List<IMotorController> speedControllers)
@@ -168,7 +165,7 @@ public class Drivetrain implements Subsystem
     public void arcadeDrive(double forward, double rotation)
     {
         setLeftMotors(forward - rotation);
-        setRightMotors(forward - rotation);
+        setRightMotors(forward + rotation);
     }
 
 
@@ -322,6 +319,13 @@ public class Drivetrain implements Subsystem
         leftEncoder.reset();
         rightEncoder.reset();
     }
+
+    public void updateShuffleboard()
+    {
+        SmartDashboard.putNumber("Left Encoder", leftEncoder.getRaw());
+        SmartDashboard.putNumber("Right Encoder", rightEncoder.getRaw());
+    }
+
 
 
 }
