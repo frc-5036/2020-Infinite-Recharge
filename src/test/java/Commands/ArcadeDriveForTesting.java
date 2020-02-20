@@ -8,7 +8,6 @@
 package Commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.OI;
 import frc.robot.customInterfaces.DriveController;
 import frc.robot.subsystems.Drivetrain;
 
@@ -47,7 +46,7 @@ public class ArcadeDriveForTesting extends CommandBase {
   @Override
   public void end(boolean interrupted)
   {
-    drivetrain.Stop();
+    drivetrain.stop();
   }
 
   // Returns true when the command should end.

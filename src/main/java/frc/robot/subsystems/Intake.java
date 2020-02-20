@@ -19,7 +19,8 @@ package frc.robot.subsystems;
 	import edu.wpi.first.wpilibj.DoubleSolenoid;
 	import edu.wpi.first.wpilibj.SpeedController;
 	import edu.wpi.first.wpilibj.VictorSP;
-	import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 	import frc.robot.RobotMap;
 
 	/**
@@ -35,11 +36,17 @@ package frc.robot.subsystems;
 	  DoubleSolenoid intakePiston;
 	  public DigitalInput beamBreaker;
 	  
-	  public Intake(List<SpeedController> intakeMotor, DoubleSolenoid intakePiston)
+	 @Override
+		 public void periodic() {
+			 // TODO Auto-generated method stub
+			 updateSmartDashboard();
+		 } 
+	 
+	  public Intake(List<SpeedController> intakeMotor, DoubleSolenoid intakePiston, DigitalInput beamBreaker)
 	  {
 		this.intakeMotor = intakeMotor;
 		this.intakePiston = intakePiston;
-		//this.beamBreaker = beamBreaker;
+		this.beamBreaker = beamBreaker;
 	  }
 
 	  public static Intake createForIntake()
@@ -47,9 +54,12 @@ package frc.robot.subsystems;
 	    VictorSP intake = new VictorSP(RobotMap.INTAKE);
 	    VictorSP intake2 = new VictorSP(RobotMap.INTAKE_2);
 	    DoubleSolenoid intakePiston = new DoubleSolenoid(RobotMap.INTAKE_IN, RobotMap.INTAKE_OUT);
-	    // DigitalInput beamBreaker = new DigitalInput(RobotMap.BEAM_BREAKER);
+	    DigitalInput Breaker = new DigitalInput(RobotMap.BEAM_BREAKER);
 
-	    return new Intake(Arrays.asList(intake, intake2), intakePiston);
+	    intake2.setInverted(true);
+
+
+	    return new Intake(Arrays.asList(intake, intake2), intakePiston, Breaker);
 	  }
 
 	  public void Run(double power)
@@ -69,10 +79,10 @@ package frc.robot.subsystems;
 	    intakePiston.set(DoubleSolenoid.Value.kForward);
 	  }
 
-	//   public boolean getBeamBreaker()
-	//   {
-	//     return beamBreaker.get();
-	//   }
+	  public boolean getBeamBreaker()
+	  {
+	    return beamBreaker.get();
+	  }
 
 	  public void beamBreaker(boolean powerCell)
 	  {
@@ -91,6 +101,11 @@ package frc.robot.subsystems;
 	  public void Stop()
 	  {
 	    Run(0);
+	  }
+
+	  public void updateSmartDashboard()
+	  {
+		  SmartDashboard.putBoolean("Beam Breaker", getBeamBreaker());
 	  }
 
 	}

@@ -1,15 +1,18 @@
-package frc.robot.commands.Intake;
+package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Intake;
 
+import java.util.Set;
 
-public class stopIntake extends CommandBase {
+public class RunIntake implements Command {
     private final Intake intake;
+    private final Set<Subsystem> subsystems;
 
-    public stopIntake(Intake intake) {
+    public RunIntake(Intake intake) {
         this.intake = intake;
-        addRequirements(intake);
+        this.subsystems = Set.of(intake);
     }
 
     @Override
@@ -20,7 +23,7 @@ public class stopIntake extends CommandBase {
     @Override
     public void execute()
     {
-        intake.Stop();
+        intake.Run(0.5);
     }
 
     @Override
@@ -32,5 +35,10 @@ public class stopIntake extends CommandBase {
     @Override
     public void end(boolean interrupted) {
 
+    }
+
+    @Override
+    public Set<Subsystem> getRequirements() {
+        return this.subsystems;
     }
 }

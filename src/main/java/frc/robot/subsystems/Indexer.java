@@ -3,10 +3,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 import java.util.Arrays;
@@ -14,49 +17,63 @@ import java.util.List;
 
 public class Indexer implements Subsystem {
 
-    List<SpeedController> speedControllers;
+    VictorSP topRoller, conveyor;
 
     double getCurrentTime;
 
-    public Indexer(List<SpeedController> speedControllers)
+    @Override
+    public void periodic() {
+        updateSmartdashboard();
+    }
+
+    public Indexer(VictorSP topRoller, VictorSP conveyor)
     {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor  or in the robot coordination class, such as RobotContainer.
 
-        this.speedControllers = speedControllers;
+        this.topRoller = topRoller;
+        this.conveyor = conveyor;
 
         getCurrentTime = Timer.getFPGATimestamp();
     }
-    public Indexer createForIndexer()
+    public static Indexer createForRobot()
     {
-        VictorSP indexerMotor = new VictorSP(RobotMap.INDEXER_MOTOR);
+        VictorSP indexerMotor = new VictorSP(RobotMap.INDEXER_CONVEYOR);
+        VictorSP singleShaftMotor = new VictorSP(RobotMap.INDEXER_ROLLER);
 
-        return new Indexer(Arrays.asList(indexerMotor));
+        indexerMotor.setInverted(true);
+        singleShaftMotor.setInverted(true);
+
+        return new Indexer(singleShaftMotor, indexerMotor);
     }
 
-    public void runIndexer (double power)
+    public void runIndexer (double conveyorpower, double topRollerPower)
     {
-        for (SpeedController sc: speedControllers)
-        {
-           sc.set(power);
-        }
+       topRoller.set(topRollerPower);
+       conveyor.set(conveyorpower);
     }
     public void stopIndexer ()
     {
-        for (SpeedController sc: speedControllers)
-        {
-            sc.set(0);
-        }
+       runIndexer(0, 0);
     }
+
     public void pulser()
     {
         if(getCurrentTime % 5 == 0)
         {
-            runIndexer(0.5);
-            Timer.delay(0.25);
-            runIndexer(-0.5);
+            runIndexer(0.5, 0.5);
+
+            runIndexer(-0.5, -0.5);
         }
     }
+    public void updateSmartdashboard()
+    {
+        SmartDashboard.putNumber("Indexer Sanity Check", System.currentTimeMillis());
+        SmartDashboard.putNumber("Indexer top roller" , topRoller.get());
+        SmartDashboard.putNumber("Conveyor" ,  conveyor.get());
+
+    }
+
 
 
 

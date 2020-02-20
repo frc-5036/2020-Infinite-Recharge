@@ -7,9 +7,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -21,8 +27,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   public static RobotContainer m_robotContainer;
- 
-
+  Compressor compressor;
+  List<SpeedController> speedControllers;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -34,6 +40,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    compressor = new Compressor();
+    compressor.stop();
+
+
 
   }
 
@@ -51,6 +61,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    //m_robotContainer.m_indexer.updateSmartdashboard();
+
   }
 
   /**
@@ -78,6 +90,7 @@ public class Robot extends TimedRobot {
 //      m_autonomousCommand.schedule();
 //    }
     m_robotContainer.getAutonomousCommand().schedule();
+
   }
 
   /**
@@ -95,6 +108,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    CommandScheduler.getInstance().run();
+
     if (m_autonomousCommand != null)
     {
       m_autonomousCommand.cancel();
@@ -107,7 +122,9 @@ public class Robot extends TimedRobot {
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic() {
+  public void teleopPeriodic()
+  {
+
   }
 
   @Override

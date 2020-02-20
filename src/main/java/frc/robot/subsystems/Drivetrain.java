@@ -27,13 +27,11 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.extra.Constants;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
-import frc.robot.Extra.Util;
+import frc.robot.extra.Util;
 import frc.robot.RobotMap;
 
 /**
@@ -73,9 +71,11 @@ public class Drivetrain implements Subsystem {
     PIDController rightPIDController;
 
     @Override
-    public void periodic() {
+    public void periodic() 
+    {
         // This method will be called once per scheduler run
         pose = odometry.update(getHeading(), leftEncoder.getDistance(), rightEncoder.getDistance());
+        updateShuffleboard();
     }
 
     public Drivetrain(List<IMotorController> rightMotors, List<IMotorController> leftMotors, Encoder leftEncoder,
@@ -91,6 +91,7 @@ public class Drivetrain implements Subsystem {
 
         leftEncoder.setDistancePerPulse(2 * Math.PI * Constants.WHEEl_RADIUS / Constants.ENCODER_RESOLUTION);
         rightEncoder.setDistancePerPulse(2 * Math.PI * Constants.WHEEl_RADIUS / Constants.ENCODER_RESOLUTION);
+
 
         this.gyro = gyro;
 
@@ -124,9 +125,9 @@ public class Drivetrain implements Subsystem {
 
 
         //Setting Right to Reverse
-        rightBack.setInverted(true);
-        rightMiddle.setInverted(true);
-        rightFront.setInverted(true);
+        leftBack.setInverted(true);
+        leftMiddle.setInverted(true);
+        leftFront.setInverted(true);
 
         //Sensors
         AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -135,7 +136,7 @@ public class Drivetrain implements Subsystem {
         Encoder m_leftEncoder = new Encoder(RobotMap.LEFT_ENC_IN, RobotMap.LEFT_ENC_OUT, false, CounterBase.EncodingType.k4X);
 
 
-        return new Drivetrain(Arrays.asList(rightFront, rightMiddle, rightBack), Arrays.asList(leftFront, leftMiddle, leftBack), m_leftEncoder, m_rightEncoder, m_gyro);
+        return new Drivetrain(Arrays.asList(rightFront, rightMiddle, rightBack), Arrays.asList(leftFront,leftMiddle,leftBack), m_leftEncoder, m_rightEncoder, m_gyro);
     }
 
     private void setMotors(double power, List<IMotorController> speedControllers)
@@ -236,7 +237,7 @@ public class Drivetrain implements Subsystem {
         setRightMotors(rightMotors);
     }
 
-    public void Stop()
+    public void stop()
     {
         setRightMotors(0);
         setLeftMotors(0);
@@ -306,6 +307,15 @@ public class Drivetrain implements Subsystem {
     {
         gyro.reset();
     }
+    public double getGyroRoll()
+    {
+        return gyro.getRoll();
+    }
+    public double getGyroPitch()
+    {
+        return gyro.getPitch();
+    }
+
     public Encoder getRightEncoder()
     {
         return rightEncoder;
@@ -319,12 +329,29 @@ public class Drivetrain implements Subsystem {
         leftEncoder.reset();
         rightEncoder.reset();
     }
+    public double getRightEncoderDistance()
+    {
+        return rightEncoder.getRaw() / 75.4;
+    }
+    public double getLeftEncoderDistance()
+    {
+        return leftEncoder.getRaw() / 75.4;
+    }
+
+    public double getAverageDistace()
+    {
+        return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
+    }
 
     public void updateShuffleboard()
     {
-        SmartDashboard.putNumber("Left Encoder", leftEncoder.getRaw());
-        SmartDashboard.putNumber("Right Encoder", rightEncoder.getRaw());
+        SmartDashboard.putNumber("Left Encoder", getLeftEncoderDistance());
+        SmartDashboard.putNumber("Right Encoder", getRightEncoderDistance());
+        SmartDashboard.putNumber("Gyro Pitch", getGyroPitch() );
+       
+        
     }
+    
 
 
 

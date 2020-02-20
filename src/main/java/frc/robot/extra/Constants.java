@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.extra;
 
 import edu.wpi.first.wpilibj.util.Units;
 
@@ -21,7 +21,7 @@ public final class Constants
 {
     public static final int TRACK_WIDTH = 0; //Put in meters
     public static final double WHEEl_RADIUS = Units.inchesToMeters(3.0); // Put in meters
-    public static final int ENCODER_RESOLUTION = 0;
+    public static final int ENCODER_RESOLUTION = 256;
 
     public static final double MAX_SPEED = 0; //Needs in meters per seconds
     public static final double MAX_ANGULAR_SPEED = 0; //Needs in one rotation per second
@@ -34,6 +34,14 @@ public final class Constants
     //Trajectory Config
     public static final double MAX_VELOCITY = 0;
     public static final double MAX_ACCELERATION = 0;
+
+
+    //PID Drivetrain Constants
+    public static final double kP_DRIVE_FORWARD = 0;
+    public static final double kD_DRIVE_FORWARD = 0;
+
+    public static final double kP_DRIVE_ROTATE = 0;
+    public static final double kD_DRIVE_ROTATE = 0;
 
 
 

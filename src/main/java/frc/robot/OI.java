@@ -7,20 +7,18 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import frc.robot.Extra.Util;
-import frc.robot.Extra.controllerButtons;
+import frc.robot.extra.Util;
+import frc.robot.extra.controllerButtons;
 import frc.robot.customInterfaces.DriveController;
+import frc.robot.customInterfaces.OperatorController;
 
 /**
  * Add your docs here.
  */
-public class OI implements DriveController
+public class OI implements DriveController, OperatorController
 {
     controllerButtons driverController = new controllerButtons(RobotMap.DRIVER_CONTROLLER);
     controllerButtons operatorController = new controllerButtons(RobotMap.OPERATOR_CONTROLLER);
-
 
 
     public OI()
@@ -28,39 +26,38 @@ public class OI implements DriveController
 
     }
 
+    @Override
     public double getForward()
     {
-       double forward = driverController.getLeftAxisY();
-       System.out.println("Calling getForward");
-      //Deadband
-      if( forward < 0.3)
-      {
-          return 0;
-      }
-      else
-      {
-          return forward;
-      }
-        //return Util.handleDeadband(forward, 0.3);
+        double forward = driverController.getLeftAxisY();
+        return Util.handleDeadband(forward, 0.03);
     }
+    @Override
     public double getRotate()
     {
         double rotate = driverController.getRightAxisX();
-        if( rotate < 0.3)
-      {
-          return 0;
-      }
-      else
-      {
-          return rotate;
-      }
-       
+        return  Util.handleDeadband(rotate, 0.03);
     }
 
+    @Override
     public boolean getQuickTurn() 
     {
-        return operatorController.getR1();
+        return driverController.getR1();
     }
 
+    @Override
+    public boolean getIntakeBtn() {
+        return operatorController.getYellowButton();
+    }
 
+    @Override
+    public double getManualShooter()
+    {
+        return operatorController.getLeftAxisY() * 0.75;
+    }
+
+    @Override
+    public boolean getClimbingBtn() {
+        return operatorController.getBlueButton();
+    }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -26,18 +27,25 @@ public class Climber implements Subsystem {
 
   List<SpeedController> climbMotors;
 
+  @Override
+  public void periodic() {
+    updateShuffle();
+  }
+
   public Climber(List<SpeedController> climbMotors)
   {
     this.climbMotors = climbMotors;
 
   }
 
-  public Climber createForClimber()
+  public static Climber createForRobot()
   {
     VictorSP climberMotor1 = new VictorSP (RobotMap.VICTOR_CLIMBER_MOTOR_1);
     VictorSP climberMotor2 = new VictorSP (RobotMap.VICTOR_CLIMBER_MOTOR_2);
 
-    return new Climber(Arrays.asList(climberMotor1, climberMotor2));
+    climberMotor2.setInverted(true);
+
+    return new Climber(Arrays.asList(climberMotor2));
   }
 
   public void climbUp(double power)
@@ -63,6 +71,12 @@ public class Climber implements Subsystem {
       sc.set(0);
     }
   }
+  public void updateShuffle()
+  {
+    SmartDashboard.putNumber("Climber", climbMotors.get(0).get());
+    //SmartDashboard.putNumber("Climber", climbMotors.get(1).get());
+  }
+
 
   
 }

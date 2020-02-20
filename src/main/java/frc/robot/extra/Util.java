@@ -1,4 +1,4 @@
-package frc.robot.Extra;
+package frc.robot.extra;
 
 public class Util
 {

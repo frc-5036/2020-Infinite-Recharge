@@ -1,4 +1,4 @@
-package frc.robot.Extra;
+package frc.robot.extra;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -24,20 +24,20 @@ public class controllerButtons
 
     public double getRightAxisY()
     {
-        return -this.joystick.getRawAxis(1);
+        return -this.joystick.getRawAxis(5);
     }
     public double getRightAxisX()
     {
-        return this.joystick.getRawAxis(0);
+        return this.joystick.getRawAxis(4);
     }
 
     public double getLeftAxisY()
     {
-        return -this.joystick.getRawAxis(5);
+        return -this.joystick.getRawAxis(1);
     }
     public double getLeftAxisX()
     {
-        return -this.joystick.getRawAxis(4);
+        return -this.joystick.getRawAxis(0);
     }
 
     public boolean getYellowButton()
@@ -95,6 +95,12 @@ public class controllerButtons
     {
         return this.joystick.getRawButton(7);
     }
+
+    public Joystick getJoystick()
+    {
+        return this.joystick;
+    }
+
 
 
 

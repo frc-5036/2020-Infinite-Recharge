@@ -16,13 +16,18 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.climber.ClimbingCommand;
+import frc.robot.commands.intake.DefaultIntakeCommand;
 import frc.robot.commands.driveCommands.ArcadeDrive;
-//import frc.robot.commands.driveCommands.CurvatureDrive;
+import frc.robot.commands.driveCommands.CurvatureDrive;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.shooter.RunShooter;
+import frc.robot.commands.shooter.shooterSeq.shooterSeq;
+import frc.robot.extra.Constants;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
 
 import java.util.Arrays;
 
@@ -38,16 +43,27 @@ public class RobotContainer {
   public final Drivetrain m_drivetrain = Drivetrain.createForRobot();
   public final Intake m_intake = Intake.createForIntake();
   private final OI m_oi = new OI();
-
-
+  public final Shooter m_shooter = Shooter.createForRobot();
+  public final Indexer m_indexer = Indexer.createForRobot();
+  public final Limelight m_limelight = new Limelight();
+  //public final Climber m_climber = Climber.createForRobot();
 
   //Commands 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final ArcadeDrive m_arcadeDrive = new ArcadeDrive(m_drivetrain, m_oi);
-  //private final CurvatureDrive m_curvatureDriveCommand = new CurvatureDrive(m_drivetrain, m_oi);
+  private final CurvatureDrive m_curvatureDriveCommand = new CurvatureDrive(m_drivetrain, m_oi);
+  private final DefaultIntakeCommand m_defaultIntakeCommand = new DefaultIntakeCommand(m_intake, m_oi);
+  //private final ClimbingCommand m_climbingCommand = new ClimbingCommand(m_climber,m_oi);
+  private final RunShooter m_runShooter = new RunShooter(6500, m_shooter);
+  private final shooterSeq m_runIndexerSeq = new shooterSeq(m_intake, m_indexer);
+
+  //Buttons
+  private final RunCommand m_stopShooter = new RunCommand(() -> m_shooter.stopShooters(), m_shooter);
+  private final RunCommand m_resetEnc = new RunCommand(()->m_shooter.resetPostionEnc(), m_shooter);
+  private final RunCommand m_indexerReverse = new RunCommand(()->m_indexer.runIndexer(-0.8, -0.3), m_indexer);
+  private final RunCommand m_ghettoButton = new RunCommand(()->m_indexer.runIndexer(0.4,0));
 
 
-  
 
 
   /**
@@ -57,7 +73,12 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    m_drivetrain.setDefaultCommand(m_arcadeDrive);
+    m_drivetrain.setDefaultCommand(m_curvatureDriveCommand);
+    m_intake.setDefaultCommand(m_defaultIntakeCommand);
+    m_shooter.setDefaultCommand(new RunCommand(() -> m_shooter.setPower(m_oi.getManualShooter()), m_shooter));
+    m_indexer.setDefaultCommand(new RunCommand(() -> m_indexer.runIndexer(0, 0), m_indexer));
+    //m_climber.setDefaultCommand(m_climbingCommand);
+
   }
 
   /**
@@ -66,7 +87,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
+  private void configureButtonBindings()
+  {
+    new JoystickButton(m_oi.operatorController.getJoystick(), 2).whileHeld(m_runIndexerSeq);
+    new JoystickButton(m_oi.operatorController.getJoystick(),1).whenPressed(m_runShooter);
+    new JoystickButton(m_oi.operatorController.getJoystick(),1).whenReleased(m_stopShooter);
+    new JoystickButton(m_oi.operatorController.getJoystick(), 3).whileHeld(m_indexerReverse);
+    new JoystickButton(m_oi.operatorController.getJoystick(), 5).whileHeld(m_ghettoButton);
+
+    //new JoystickButton(m_oi.operatorController.getJoystick(), 6).whenPressed(m_resetEnc);
   }
 
 

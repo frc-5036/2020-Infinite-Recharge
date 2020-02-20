@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class Limelight implements Subsystem
@@ -12,6 +13,7 @@ public class Limelight implements Subsystem
     private double kP_rotation = 0.0; //Proportional Gain  Needs to be toned
     private double kP_forward = 0.0; //For forward
     private double minCommmand = 0.0; //Needs to be toned
+    private final double ANGLE_TOLERANCE = 0.0; //Needs to be toned
 
     //Getting limelight values variables
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -23,6 +25,11 @@ public class Limelight implements Subsystem
     double heightOfTheTarget;
     double mountedAngle;
 
+    @Override
+    public void periodic()
+    {
+        updateSmartdashboard();
+    }
 
     public Limelight()
     {
@@ -50,26 +57,24 @@ public class Limelight implements Subsystem
     {
         return (heightOfTheTarget - distanceToLimelightFromFloor) / Math.tan(mountedAngle + ty);
     }
-    public void aimingWithVision(boolean button)
+    public double aimingWithVision(boolean button)
     {
+        double headingError = tx; //Might need to change to Negative
+        double rotationAdjustment = 0.0;
         if(button)
         {
-            double headingError = tx; //Might need to change to Negative
-            double rotationAdjustment = 0.0;
-
-            if (Math.abs(tx) < 1.0) //Might not need Abs
+            if (Math.abs(tx) < ANGLE_TOLERANCE) //Might not need Abs
             {
                 rotationAdjustment = headingError * kP_rotation + minCommmand;
             }
-            else if (Math.abs(tx) > 1.0)
+            else if (Math.abs(tx) > ANGLE_TOLERANCE)
             {
                 rotationAdjustment = headingError * kP_rotation - minCommmand;
             }
-
-            double newRotation = rotationAdjustment;
-
         }
+        return rotationAdjustment;
     }
+
     public void gettingInRange(boolean button)
     {
         double currentDistance = estimateDistance();
@@ -92,11 +97,11 @@ public class Limelight implements Subsystem
 
         if(button)
         {
-            if (Math.abs(tx) < 1.0) //Might not need Abs
+            if (tx < ANGLE_TOLERANCE) //Might not need Abs
             {
                 rotationAdjustment = headingError * kP_rotation + minCommmand;
             }
-            else if (Math.abs(tx) > 1.0)
+            else if (tx > ANGLE_TOLERANCE)
             {
                 rotationAdjustment = headingError * kP_rotation - minCommmand;
             }
@@ -108,6 +113,12 @@ public class Limelight implements Subsystem
         double newForward = forwardAdjustment;
 
     }
+    public void updateSmartdashboard()
+    {
+        SmartDashboard.putNumber("Tx limelight",tx);
+        SmartDashboard.putNumber("Ty Limelight", ty);
+    }
+
 
 
 

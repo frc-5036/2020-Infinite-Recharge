@@ -1,41 +1,41 @@
-// package frc.robot.commands.driveCommands;
+package frc.robot.commands.driveCommands;
 
-// import edu.wpi.first.wpilibj2.command.CommandBase;
-// import frc.robot.OI;
-// import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.OI;
+import frc.robot.subsystems.Drivetrain;
 
 
-// public class CurvatureDrive extends CommandBase {
-//     private final Drivetrain drivetrain;
-//     private final OI oi;
+public class CurvatureDrive extends CommandBase {
+    private final Drivetrain drivetrain;
+    private final OI oi;
 
-//     public CurvatureDrive(Drivetrain drivetrain, OI oi)
-//     {
-//         this.drivetrain = drivetrain;
-//         this.oi = oi;
-//         addRequirements(drivetrain);
-//     }
+    public CurvatureDrive(Drivetrain drivetrain, OI oi)
+    {
+        this.drivetrain = drivetrain;
+        this.oi = oi;
+        addRequirements(drivetrain);
+    }
 
-//     @Override
-//     public void initialize() {
+    @Override
+    public void initialize() {
 
-//     }
+    }
 
-//     @Override
-//     public void execute()
-//     {
-//         drivetrain.curvatureDrive(oi.getForward(),oi.getRotate(),oi.getQuickTurn());
-//     }
+    @Override
+    public void execute()
+    {
+        drivetrain.curvatureDrive(oi.getForward(),oi.getRotate(),oi.getQuickTurn());
+    }
 
-//     @Override
-//     public boolean isFinished() {
-//         // TODO: Make this return true when this Command no longer needs to run execute()
-//         return false;
-//     }
+    @Override
+    public boolean isFinished() {
+        // TODO: Make this return true when this Command no longer needs to run execute()
+        return false;
+    }
 
-//     @Override
-//     public void end(boolean interrupted)
-//     {
-//         drivetrain.Stop();
-//     }
-// }
+    @Override
+    public void end(boolean interrupted)
+    {
+        drivetrain.stop();
+    }
+}
