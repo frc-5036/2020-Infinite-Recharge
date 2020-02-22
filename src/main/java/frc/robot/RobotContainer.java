@@ -18,14 +18,16 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.climber.ClimbingCommand;
+import frc.robot.commands.EmptyCommand;
 import frc.robot.commands.intake.DefaultIntakeCommand;
 import frc.robot.commands.driveCommands.ArcadeDrive;
 import frc.robot.commands.driveCommands.CurvatureDrive;
 import frc.robot.commands.ExampleCommand;
+//import frc.robot.commands.limelight.AutoAim;
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.shooter.shooterSeq.shooterSeq;
 import frc.robot.extra.Constants;
+import frc.robot.extra.LED;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -45,7 +47,8 @@ public class RobotContainer {
   private final OI m_oi = new OI();
   public final Shooter m_shooter = Shooter.createForRobot();
   public final Indexer m_indexer = Indexer.createForRobot();
-  public final Limelight m_limelight = new Limelight();
+  //public final Limelight m_limelight = new Limelight();
+  public final LED m_LED = new LED();
   //public final Climber m_climber = Climber.createForRobot();
 
   //Commands 
@@ -56,12 +59,15 @@ public class RobotContainer {
   //private final ClimbingCommand m_climbingCommand = new ClimbingCommand(m_climber,m_oi);
   private final RunShooter m_runShooter = new RunShooter(6500, m_shooter);
   private final shooterSeq m_runIndexerSeq = new shooterSeq(m_intake, m_indexer);
+ // private final AutoAim m_autoAim = new AutoAim(m_drivetrain, m_oi);
 
   //Buttons
   private final RunCommand m_stopShooter = new RunCommand(() -> m_shooter.stopShooters(), m_shooter);
   private final RunCommand m_resetEnc = new RunCommand(()->m_shooter.resetPostionEnc(), m_shooter);
   private final RunCommand m_indexerReverse = new RunCommand(()->m_indexer.runIndexer(-0.8, -0.3), m_indexer);
   private final RunCommand m_ghettoButton = new RunCommand(()->m_indexer.runIndexer(0.4,0));
+  //private final RunCommand m_autoGhetto = new RunCommand(()-> m_drivetrain.aimTurn(m_drivetrain.aimingWithVision()));
+
 
 
 
@@ -77,6 +83,7 @@ public class RobotContainer {
     m_intake.setDefaultCommand(m_defaultIntakeCommand);
     m_shooter.setDefaultCommand(new RunCommand(() -> m_shooter.setPower(m_oi.getManualShooter()), m_shooter));
     m_indexer.setDefaultCommand(new RunCommand(() -> m_indexer.runIndexer(0, 0), m_indexer));
+    //sm_limelight.setDefaultCommand(m_autoAim);
     //m_climber.setDefaultCommand(m_climbingCommand);
 
   }
@@ -93,7 +100,8 @@ public class RobotContainer {
     new JoystickButton(m_oi.operatorController.getJoystick(),1).whenPressed(m_runShooter);
     new JoystickButton(m_oi.operatorController.getJoystick(),1).whenReleased(m_stopShooter);
     new JoystickButton(m_oi.operatorController.getJoystick(), 3).whileHeld(m_indexerReverse);
-    new JoystickButton(m_oi.operatorController.getJoystick(), 5).whileHeld(m_ghettoButton);
+   // new JoystickButton(m_oi.operatorController.getJoystick(),5).whileHeld(new AutoAim(m_drivetrain,m_oi));
+
 
     //new JoystickButton(m_oi.operatorController.getJoystick(), 6).whenPressed(m_resetEnc);
   }

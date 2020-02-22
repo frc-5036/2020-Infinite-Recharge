@@ -60,4 +60,10 @@ public class OI implements DriveController, OperatorController
     public boolean getClimbingBtn() {
         return operatorController.getBlueButton();
     }
+
+    @Override
+    public boolean getAutoAim() {
+        return operatorController.getL1();
+    }
+
 }

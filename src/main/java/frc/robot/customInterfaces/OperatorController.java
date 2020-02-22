@@ -5,4 +5,5 @@ public interface OperatorController
     boolean getIntakeBtn();
     double getManualShooter();
     boolean getClimbingBtn();
+    boolean getAutoAim();
 }

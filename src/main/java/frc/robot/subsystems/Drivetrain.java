@@ -19,6 +19,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -28,9 +31,11 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+//import frc.robot.commands.limelight.AutoAim;
 import frc.robot.extra.Constants;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
+import frc.robot.extra.Limelight;
 import frc.robot.extra.Util;
 import frc.robot.RobotMap;
 
@@ -41,9 +46,22 @@ public class Drivetrain implements Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
+    private double desiredDistance;
+
+    private double kP_rotation = 0.75; //Proportional Gain  Needs to be toned
+    private double kP_forward = 0.0; //For forward
+    private double minCommmand = 0.0; //Needs to be toned
+    private final double ANGLE_TOLERANCE = 2.0; //Needs to be toned
+
+//   Limelight limelight;
+//   double tx;
+//   double ty;
+
     // Speed Controllers
     List<IMotorController> rightMotors;
     List<IMotorController> leftMotors;
+
+
 
     private static double kP;
     private static double kI;
@@ -105,6 +123,17 @@ public class Drivetrain implements Subsystem {
 
         leftPIDController = new PIDController(kP, kI, kD);
         rightPIDController = new PIDController(kP, kI, kD);
+
+
+
+
+
+        desiredDistance = 0.0; //Needs to be changed
+
+//        limelight = new Limelight();
+//        tx = limelight.getTX();
+//        ty = limelight.getTY();
+
 
         setBrakeMode();
         gyroReset();
@@ -315,6 +344,11 @@ public class Drivetrain implements Subsystem {
     {
         return gyro.getPitch();
     }
+    public double getGyroYaw()
+    {
+        return gyro.getYaw();
+    }
+
 
     public Encoder getRightEncoder()
     {
@@ -343,14 +377,99 @@ public class Drivetrain implements Subsystem {
         return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
     }
 
+
+
+    public double aimingWithVision(double headingError)
+    {
+        double rotationAdjustment = 0.0;
+
+
+        if (headingError < ANGLE_TOLERANCE) //Might not need Abs
+        {
+            rotationAdjustment = headingError * kP_rotation;
+        }
+        else if (headingError > ANGLE_TOLERANCE)
+        {
+            rotationAdjustment = headingError * kP_rotation;
+        }
+        else {
+            rotationAdjustment = 0;
+        }
+
+        return rotationAdjustment;
+    }
+
+    public void aimTurn(double rotate)
+    {
+        System.out.println("auto aim");
+        arcadeDrive(0,rotate);
+    }
+
+//    public void gettingInRange(boolean button)
+//    {
+//        double currentDistance = estimateDistance();
+//        double forwardAdjustment = 0;
+//
+//        if (button)
+//        {
+//            double distanceError = desiredDistance - currentDistance;
+//            forwardAdjustment = kP_forward * distanceError;
+//        }
+//        double newForward = forwardAdjustment;
+//    }
+
+//    public void aimingAndGettingInRange(boolean button)
+//    {
+//        double headingError = x; //Might need to change to Negative
+//        double rotationAdjustment = 0.0;
+//        double currentDistance = estimateDistance();
+//        double forwardAdjustment = 0;
+//
+//        if(button)
+//        {
+//            if (x < ANGLE_TOLERANCE) //Might not need Abs
+//            {
+//                rotationAdjustment = headingError * kP_rotation + minCommmand;
+//            }
+//            else if (x > ANGLE_TOLERANCE)
+//            {
+//                rotationAdjustment = headingError * kP_rotation - minCommmand;
+//            }
+//
+//            double distanceError = desiredDistance - currentDistance;
+//            forwardAdjustment = kP_forward * distanceError;
+//        }
+//        double newRotation = rotationAdjustment;
+//        double newForward = forwardAdjustment;
+//
+//    }
+
     public void updateShuffleboard()
     {
         SmartDashboard.putNumber("Left Encoder", getLeftEncoderDistance());
         SmartDashboard.putNumber("Right Encoder", getRightEncoderDistance());
         SmartDashboard.putNumber("Gyro Pitch", getGyroPitch() );
+        SmartDashboard.putNumber("Gyro Roll", getGyroRoll());
+        SmartDashboard.putNumber("Gyro Yaw", getGyroYaw());
+
+        SmartDashboard.putNumber("Right Motor 1", rightMotors.get(0).getMotorOutputPercent());
+        SmartDashboard.putNumber("Right Motor 2", rightMotors.get(1).getMotorOutputPercent());
+
+        SmartDashboard.putNumber("Left Motor 1", leftMotors.get(0).getMotorOutputPercent());
+        SmartDashboard.putNumber("Left Motor 2", leftMotors.get(1).getMotorOutputPercent());
+        SmartDashboard.putNumber("Left Motor 3", leftMotors.get(2).getMotorOutputPercent());
+
+
+       //SmartDashboard.putNumber("Angle Adjusment", tx);
+
+
+
        
         
     }
+
+
+
     
 
 

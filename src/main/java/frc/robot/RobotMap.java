@@ -22,18 +22,19 @@ public class RobotMap
 
 
     //Sensors
-    public static final int RIGHT_ENC_IN = 2;
-    public static final int RIGHT_ENC_OUT = 3;
-    public static final int LEFT_ENC_IN = 0;
-    public static final int LEFT_ENC_OUT = 1;
+    public static final int RIGHT_ENC_IN = 4;
+    public static final int RIGHT_ENC_OUT = 5;
+
+    public static final int LEFT_ENC_IN = 2;
+    public static final int LEFT_ENC_OUT = 0;
 	
 
      // Intake
-     public static final int INTAKE = 1; // Port needs to be changed
-     public static final int INTAKE_2 = 3;
+     public static final int INTAKE = 5; // Port needs to be changed
+     public static final int INTAKE_2 = 6;
      public static final int INTAKE_IN =1; // Port needs to be changed
      public static final int INTAKE_OUT = 0; // Port needs to be changed
-     public static final int BEAM_BREAKER = 4; // Port needs to be changed
+     public static final int BEAM_BREAKER = 3; // Port needs to be changed
 
      //Climber
      public static final int VICTOR_CLIMBER_MOTOR_1 =0; // use to be 4
@@ -41,8 +42,8 @@ public class RobotMap
 
     //Indexer
 
-    public static final int INDEXER_ROLLER = 8; //Top roller
-    public static final int INDEXER_CONVEYOR =5;//or 5
+    public static final int INDEXER_ROLLER = 7; //Top roller
+    public static final int INDEXER_CONVEYOR =8;//or 5
 
     //Shooter
     public static final int SHOOTER_1 = 11; // Can ID (Talon)
@@ -51,8 +52,10 @@ public class RobotMap
     public static final int SHOOTER_3 = 6;
     public static final int SHOOTER_4 = 7;
 
-    public static final int SHOOTER_BEAM_BREAKER = 5;
+    public static final int SHOOTER_BEAM_BREAKER = 6;
 
+    //LED Controler
+    public static final int SPARK_CONTROLLER = 4;
 
     // 1 , 3, 4,5
  
