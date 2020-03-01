@@ -10,11 +10,6 @@ package frc.robot.subsystems;
 	import java.util.Arrays;
 	import java.util.List;
 
-	import com.ctre.phoenix.motorcontrol.ControlMode;
-	import com.ctre.phoenix.motorcontrol.IMotorController;
-	import com.fasterxml.jackson.databind.type.ResolvedRecursiveType;
-
-	import edu.wpi.first.vision.VisionRunner.Listener;
 	import edu.wpi.first.wpilibj.DigitalInput;
 	import edu.wpi.first.wpilibj.DoubleSolenoid;
 	import edu.wpi.first.wpilibj.SpeedController;
@@ -34,19 +29,22 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 	  List<SpeedController> intakeMotor;
 	  DoubleSolenoid intakePiston;
-	  public DigitalInput beamBreaker;
+	  public DigitalInput beamBreaker, buttonSensor;
 	  
 	 @Override
-		 public void periodic() {
+		 public void periodic()
+	 	{
 			 // TODO Auto-generated method stub
 			 updateSmartDashboard();
-		 } 
+			 Run(0.2);
+	 	}
 	 
-	  public Intake(List<SpeedController> intakeMotor, DoubleSolenoid intakePiston, DigitalInput beamBreaker)
+	  public Intake(List<SpeedController> intakeMotor, DoubleSolenoid intakePiston, DigitalInput buttonSensor)
 	  {
 		this.intakeMotor = intakeMotor;
 		this.intakePiston = intakePiston;
-		this.beamBreaker = beamBreaker;
+		//this.beamBreaker = beamBreaker;
+		this.buttonSensor = buttonSensor;
 	  }
 
 	  public static Intake createForIntake()
@@ -54,12 +52,13 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 	    VictorSP intake = new VictorSP(RobotMap.INTAKE);
 	    VictorSP intake2 = new VictorSP(RobotMap.INTAKE_2);
 	    DoubleSolenoid intakePiston = new DoubleSolenoid(RobotMap.INTAKE_IN, RobotMap.INTAKE_OUT);
-	    DigitalInput Breaker = new DigitalInput(RobotMap.BEAM_BREAKER);
+	    //DigitalInput Breaker = new DigitalInput(RobotMap.BEAM_BREAKER);
+	    DigitalInput button = new DigitalInput(RobotMap.BUTTON_SENSOR);
 
-	    intake2.setInverted(true);
 
 
-	    return new Intake(Arrays.asList(intake, intake2), intakePiston, Breaker);
+
+	    return new Intake(Arrays.asList(intake, intake2), intakePiston, button);
 	  }
 
 	  public void Run(double power)
@@ -79,10 +78,10 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 	    intakePiston.set(DoubleSolenoid.Value.kForward);
 	  }
 
-	  public boolean getBeamBreaker()
-	  {
-	    return beamBreaker.get();
-	  }
+//	  public boolean getBeamBreaker()
+//	  {
+//	    return beamBreaker.get();
+//	  }
 
 	  public void beamBreaker(boolean powerCell)
 	  {
@@ -91,22 +90,27 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 	      int counter = 0;   //Unless robot starts with preloaded power cells.
 	      counter++;
 
-	      if(counter==5)
-	      {
-	        intakeIn();
-	      }
-	    }
-	  }
+	     if(counter==5)
+	     {
+	       intakeIn();
+	 	 }
+	  	}
+	 }
+	  public boolean getButtonSensor()
+	 {
+	 	return buttonSensor.get();
+	 }
 
-	  public void Stop()
-	  {
-	    Run(0);
-	  }
 
+	 public void Stop()
+	 {
+	   Run(0);
+	 }
 	  public void updateSmartDashboard()
-	  {
-		  SmartDashboard.putBoolean("Beam Breaker", getBeamBreaker());
-	  }
+	 {
+	 	//SmartDashboard.putBoolean("Beam Breaker", getBeamBreaker());
+	 	SmartDashboard.putBoolean("Button Sensor", getButtonSensor());
+	 }
 
-	}
+  }
 

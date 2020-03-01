@@ -35,7 +35,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.extra.Constants;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
-import frc.robot.extra.Limelight;
+//import frc.robot.extra.Limelight;
 import frc.robot.extra.Util;
 import frc.robot.RobotMap;
 
@@ -146,16 +146,16 @@ public class Drivetrain implements Subsystem {
         TalonSRX rightFront = new TalonSRX(RobotMap.RIGHT_FRONT_DRIVE);
         TalonSRX leftFront = new TalonSRX(RobotMap.LEFT_FRONT_DRIVE);
 
-        TalonSRX rightMiddle = new TalonSRX(RobotMap.RIGHT_MIDDLE_DRIVE);
-        VictorSPX leftMiddle = new VictorSPX(RobotMap.LEFT_MIDDLE_DRIVE);
+//        TalonSRX rightMiddle = new TalonSRX(RobotMap.RIGHT_MIDDLE_DRIVE);
+//        VictorSPX leftMiddle = new VictorSPX(RobotMap.LEFT_MIDDLE_DRIVE);
 
         TalonSRX rightBack = new TalonSRX(RobotMap.RIGHT_BACK_DRIVE);
-        VictorSPX leftBack = new VictorSPX(RobotMap.LEFT_BACK_DRIVE);
+        TalonSRX leftBack = new TalonSRX(RobotMap.LEFT_BACK_DRIVE);
 
 
         //Setting Right to Reverse
         leftBack.setInverted(true);
-        leftMiddle.setInverted(true);
+//        leftMiddle.setInverted(true);
         leftFront.setInverted(true);
 
         //Sensors
@@ -165,7 +165,7 @@ public class Drivetrain implements Subsystem {
         Encoder m_leftEncoder = new Encoder(RobotMap.LEFT_ENC_IN, RobotMap.LEFT_ENC_OUT, false, CounterBase.EncodingType.k4X);
 
 
-        return new Drivetrain(Arrays.asList(rightFront, rightMiddle, rightBack), Arrays.asList(leftFront,leftMiddle,leftBack), m_leftEncoder, m_rightEncoder, m_gyro);
+        return new Drivetrain(Arrays.asList(rightFront,rightBack), Arrays.asList(leftFront,leftBack), m_leftEncoder, m_rightEncoder, m_gyro);
     }
 
     private void setMotors(double power, List<IMotorController> speedControllers)
@@ -194,8 +194,8 @@ public class Drivetrain implements Subsystem {
 
     public void arcadeDrive(double forward, double rotation)
     {
-        setLeftMotors(forward - rotation);
-        setRightMotors(forward + rotation);
+        setLeftMotors(forward + rotation);
+        setRightMotors(forward - rotation);
     }
 
 
@@ -376,6 +376,10 @@ public class Drivetrain implements Subsystem {
     {
         return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
     }
+    public double getEncInTicks()
+    {
+        return leftEncoder.get() + rightEncoder.get();
+    }
 
 
 
@@ -452,12 +456,14 @@ public class Drivetrain implements Subsystem {
         SmartDashboard.putNumber("Gyro Roll", getGyroRoll());
         SmartDashboard.putNumber("Gyro Yaw", getGyroYaw());
 
-        SmartDashboard.putNumber("Right Motor 1", rightMotors.get(0).getMotorOutputPercent());
-        SmartDashboard.putNumber("Right Motor 2", rightMotors.get(1).getMotorOutputPercent());
+        SmartDashboard.putNumber("Enc In ticks", getEncInTicks());
 
-        SmartDashboard.putNumber("Left Motor 1", leftMotors.get(0).getMotorOutputPercent());
-        SmartDashboard.putNumber("Left Motor 2", leftMotors.get(1).getMotorOutputPercent());
-        SmartDashboard.putNumber("Left Motor 3", leftMotors.get(2).getMotorOutputPercent());
+//        SmartDashboard.putNumber("Right Motor 1", rightMotors.get(0).getMotorOutputPercent());
+//        SmartDashboard.putNumber("Right Motor 2", rightMotors.get(1).getMotorOutputPercent());
+//
+//        SmartDashboard.putNumber("Left Motor 1", leftMotors.get(0).getMotorOutputPercent());
+//        SmartDashboard.putNumber("Left Motor 2", leftMotors.get(1).getMotorOutputPercent());
+//        SmartDashboard.putNumber("Left Motor 3", leftMotors.get(2).getMotorOutputPercent());
 
 
        //SmartDashboard.putNumber("Angle Adjusment", tx);

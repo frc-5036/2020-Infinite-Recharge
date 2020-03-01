@@ -39,11 +39,11 @@ public class RunIndexer extends CommandBase {
 
         }
 
-        else
-        {
-            indexer.runIndexer(-0.5,-0.35);
-        }
-        indexer.runIndexer(0.5,0.35);
+//        else
+//        {
+//            indexer.runIndexer(-0.5,-0.35);
+//        }
+        indexer.runIndexer(0.9,0.5,0.8);
     }
 
     @Override

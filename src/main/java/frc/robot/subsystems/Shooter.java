@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -47,18 +48,34 @@ public class Shooter implements Subsystem {
 
         TalonSRX shooter1 = new TalonSRX(RobotMap.SHOOTER_1);
 
-        IMotorController shooter2 = new TalonSRX(RobotMap.SHOOTER_2);
-        IMotorController shooter3 = new VictorSPX(RobotMap.SHOOTER_3);
-        IMotorController shooter4 = new VictorSPX(RobotMap.SHOOTER_4);
+        TalonSRX shooter2 = new TalonSRX(RobotMap.SHOOTER_2);
+        VictorSPX shooter3 = new VictorSPX(RobotMap.SHOOTER_3);
+        VictorSPX shooter4 = new VictorSPX(RobotMap.SHOOTER_4);
+
+        shooter2.follow(shooter1);
+        shooter3.follow(shooter1);
+        shooter4.follow(shooter1);
+
+        shooter1.configFactoryDefault();
+        shooter2.configFactoryDefault();
+        shooter3.configFactoryDefault();
+        shooter4.configFactoryDefault();
 
         shooter1.setInverted(true);
-        shooter4.setInverted(true);
+        shooter2.setInverted(InvertType.FollowMaster);
+        shooter4.setInverted(InvertType.OpposeMaster);
+        shooter3.setInverted(InvertType.OpposeMaster);
 
         shooter1.setNeutralMode(NeutralMode.Coast);
         shooter2.setNeutralMode(NeutralMode.Coast);
         shooter3.setNeutralMode(NeutralMode.Coast);
         shooter3.setNeutralMode(NeutralMode.Coast);
-        
+
+        shooter1.configContinuousCurrentLimit(20);
+        shooter2.configContinuousCurrentLimit(20);
+
+        shooter1.configPeakCurrentLimit(40);
+
 
         DigitalInput breaker = new DigitalInput(RobotMap.SHOOTER_BEAM_BREAKER);
 
@@ -112,11 +129,11 @@ public class Shooter implements Subsystem {
 
     public void updateSmartdashboard()
     {
-        SmartDashboard.getBoolean("Shooter Beam Breaker", getBeamBreaker());
-        SmartDashboard.putNumber("Shooter 1", talonWthEnc.getMotorOutputPercent());
-        SmartDashboard.putNumber("Shooter 2", shooterMotors.get(0).getMotorOutputPercent());
-        SmartDashboard.putNumber("Shooter 3", shooterMotors.get(1).getMotorOutputPercent());
-        SmartDashboard.putNumber("Shooter 4", shooterMotors.get(2).getMotorOutputPercent());
+//        SmartDashboard.getBoolean("Shooter Beam Breaker", getBeamBreaker());
+//        SmartDashboard.putNumber("Shooter 1", talonWthEnc.getMotorOutputPercent());
+//        SmartDashboard.putNumber("Shooter 2", shooterMotors.get(0).getMotorOutputPercent());
+//        SmartDashboard.putNumber("Shooter 3", shooterMotors.get(1).getMotorOutputPercent());
+//        SmartDashboard.putNumber("Shooter 4", shooterMotors.get(2).getMotorOutputPercent());
         SmartDashboard.putNumber("Encoder Velocity", getRPM());
 
     }

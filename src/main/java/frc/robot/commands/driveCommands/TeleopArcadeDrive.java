@@ -1,18 +1,21 @@
-package frc.robot.commands.intake;
+package frc.robot.commands.driveCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.Intake;
+import frc.robot.OI;
+import frc.robot.subsystems.Drivetrain;
 
 import java.util.Set;
 
-public class RunIntake implements Command {
-    private final Intake intake;
+public class TeleopArcadeDrive implements Command {
+    private final Drivetrain drivetrain;
     private final Set<Subsystem> subsystems;
+    private final OI oi;
 
-    public RunIntake(Intake intake) {
-        this.intake = intake;
-        this.subsystems = Set.of(intake);
+    public TeleopArcadeDrive(Drivetrain drivetrain, OI oi) {
+        this.drivetrain = drivetrain;
+        this.oi = oi;
+        this.subsystems = Set.of(this.drivetrain);
     }
 
     @Override
@@ -23,8 +26,7 @@ public class RunIntake implements Command {
     @Override
     public void execute()
     {
-        intake.Run(0.8);
-        intake.intakeOut();
+        drivetrain.arcadeDrive(oi.getForward(),oi.getRotate());
     }
 
     @Override

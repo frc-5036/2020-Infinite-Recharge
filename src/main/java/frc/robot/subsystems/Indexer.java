@@ -1,8 +1,10 @@
 package frc.robot.subsystems;
 
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
@@ -17,7 +19,8 @@ import java.util.List;
 
 public class Indexer implements Subsystem {
 
-    VictorSP topRoller, conveyor;
+    VictorSP topRoller, bottomRoller;
+    IMotorController indexer1, indexer2;
 
     double getCurrentTime;
 
@@ -26,51 +29,64 @@ public class Indexer implements Subsystem {
         updateSmartdashboard();
     }
 
-    public Indexer(VictorSP topRoller, VictorSP conveyor)
+    public Indexer(VictorSP topRoller,IMotorController indexer1,  IMotorController indexer2, VictorSP bottomRoller)
     {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor  or in the robot coordination class, such as RobotContainer.
 
         this.topRoller = topRoller;
-        this.conveyor = conveyor;
+        this.indexer1 = indexer1;
+        this.indexer2 = indexer2;
+        this.bottomRoller = bottomRoller;
 
         getCurrentTime = Timer.getFPGATimestamp();
     }
     public static Indexer createForRobot()
     {
-        VictorSP indexerMotor = new VictorSP(RobotMap.INDEXER_CONVEYOR);
-        VictorSP singleShaftMotor = new VictorSP(RobotMap.INDEXER_ROLLER);
 
-        indexerMotor.setInverted(true);
+        VictorSP singleShaftMotor = new VictorSP(RobotMap.INDEXER_ROLLER);
+        VictorSP bottomConveyorRoller = new VictorSP(RobotMap.BOTTOM_ROLLER);
+        IMotorController frontIndexer1 = new TalonSRX(RobotMap.INDEXER_CONVEYOR);
+        IMotorController frontIndexer2 = new VictorSPX(RobotMap.INDEXER_CONVEYOR2);
+
+        frontIndexer2.setInverted(true);
+        bottomConveyorRoller.setInverted(true);
+
+
         singleShaftMotor.setInverted(true);
 
-        return new Indexer(singleShaftMotor, indexerMotor);
+        return new Indexer(singleShaftMotor, frontIndexer1,frontIndexer2, bottomConveyorRoller);
     }
 
-    public void runIndexer (double conveyorpower, double topRollerPower)
+    public void runIndexer (double leftSidePower, double rightSidePower, double power)
     {
-       topRoller.set(topRollerPower);
-       conveyor.set(conveyorpower);
+       topRoller.set(power);
+       indexer1.set(ControlMode.PercentOutput,leftSidePower);
+       indexer2.set(ControlMode.PercentOutput, rightSidePower);
+       bottomRoller.set(power);
     }
     public void stopIndexer ()
     {
-       runIndexer(0, 0);
+       runIndexer(0,0,0);
     }
 
-    public void pulser()
-    {
-        if(getCurrentTime % 5 == 0)
-        {
-            runIndexer(0.5, 0.5);
-
-            runIndexer(-0.5, -0.5);
-        }
-    }
+//    public void pulser()
+//    {
+//        if(getCurrentTime % 5 == 0)
+//        {
+//            runIndexer(0.5, 0.5);
+//
+//            runIndexer(-0.5, -0.5);
+//        }
+//    }
     public void updateSmartdashboard()
     {
         SmartDashboard.putNumber("Indexer Sanity Check", System.currentTimeMillis());
         SmartDashboard.putNumber("Indexer top roller" , topRoller.get());
-        SmartDashboard.putNumber("Conveyor" ,  conveyor.get());
+        SmartDashboard.putNumber("Indexer bottom roller", bottomRoller.get());
+        //SmartDashboard.putNumber("Indexer side rollers", indexer1.getMotorOutputPercent());
+        //SmartDashboard.putNumber("Indexer side rollers 2", indexer2.getMotorOutputPercent());
+
 
     }
 

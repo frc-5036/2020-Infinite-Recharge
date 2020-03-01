@@ -35,7 +35,8 @@ public class OI implements DriveController, OperatorController
     @Override
     public double getRotate()
     {
-        double rotate = driverController.getRightAxisX();
+        double gettingRotate =  driverController.getRightAxisX();
+        double rotate = 0.6 * (gettingRotate) + 0.4 * (Math.pow(gettingRotate,3));
         return  Util.handleDeadband(rotate, 0.03);
     }
 

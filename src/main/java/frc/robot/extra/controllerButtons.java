@@ -37,7 +37,7 @@ public class controllerButtons
     }
     public double getLeftAxisX()
     {
-        return -this.joystick.getRawAxis(0);
+        return this.joystick.getRawAxis(0);
     }
 
     public boolean getYellowButton()

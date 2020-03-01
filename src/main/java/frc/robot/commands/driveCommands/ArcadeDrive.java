@@ -42,7 +42,7 @@ public class ArcadeDrive extends CommandBase {
  @Override
  public void execute()
  {
-  drivetrain.arcadeDrive(oi.getForward(), oi.getRotate());
+  drivetrain.arcadeDrive(0.50, 0);
  }
 
  // Called once the command ends or is interrupted.

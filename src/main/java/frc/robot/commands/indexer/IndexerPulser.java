@@ -26,14 +26,14 @@ public class IndexerPulser implements Command {
     @Override
     public void execute()
     {
-        if(Timer.getFPGATimestamp() % 2.5 == 0 )
-        {
-            indexer.runIndexer(-0.5, -0.5);
-        }
-        else
-        {
-            indexer.runIndexer(0.5,0.5);
-        }
+//        if(Timer.getFPGATimestamp() % 2.5 == 0 )
+//        {
+//            indexer.runIndexer(-0.5, -0.5);
+//        }
+//        else
+//        {
+//            indexer.runIndexer(0.5,0.5);
+//        }
     }
     @Override
     public boolean isFinished() {
