@@ -23,7 +23,8 @@ public class DriveStraightBangBang implements Command {
     @Override
     public void initialize()
     {
-
+        currentDistance = 0;
+        drivetrain.encoderReset();
     }
 
     @Override
@@ -33,7 +34,7 @@ public class DriveStraightBangBang implements Command {
 
         if(currentDistance < desiredDistance)
         {
-            drivetrain.arcadeDrive(0.5,0);
+            drivetrain.arcadeDrive(0.30,0);
         }
         else if(currentDistance > desiredDistance)
         {
@@ -44,7 +45,7 @@ public class DriveStraightBangBang implements Command {
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        if((currentDistance - TOLERANCE) < desiredDistance || (currentDistance + TOLERANCE) > desiredDistance)
+        if( currentDistance > desiredDistance)
         {
             return true;
         }

@@ -92,7 +92,7 @@ public class Drivetrain implements Subsystem {
     public void periodic() 
     {
         // This method will be called once per scheduler run
-        pose = odometry.update(getHeading(), leftEncoder.getDistance(), rightEncoder.getDistance());
+        //pose = odometry.update(getHeading(), leftEncoder.getDistance(), rightEncoder.getDistance());
         updateShuffleboard();
     }
 
@@ -154,14 +154,34 @@ public class Drivetrain implements Subsystem {
 
 
         //Setting Right to Reverse
-        leftBack.setInverted(true);
-//        leftMiddle.setInverted(true);
-        leftFront.setInverted(true);
+
+        rightBack.configFactoryDefault();
+        rightFront.configFactoryDefault();
+        leftBack.configFactoryDefault();
+        leftFront.configFactoryDefault();
+
+        rightBack.setNeutralMode(NeutralMode.Brake);
+        rightFront.setNeutralMode(NeutralMode.Brake);
+        leftBack.setNeutralMode(NeutralMode.Brake);
+        leftFront.setNeutralMode(NeutralMode.Brake);
+
+//        rightBack.configOpenloopRamp(0.05);
+//        rightFront.configOpenloopRamp(0.05);
+//        leftBack.configOpenloopRamp(0.05);
+//        leftFront.configOpenloopRamp(0.05);
+
+        leftBack.setInverted(false);
+        leftFront.setInverted(false);
+
+        rightBack.setInverted(true);
+        rightFront.setInverted(true);
+
+
 
         //Sensors
         AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
-        Encoder m_rightEncoder = new Encoder(RobotMap.RIGHT_ENC_IN, RobotMap.RIGHT_ENC_OUT,false, CounterBase.EncodingType.k4X);
+        Encoder m_rightEncoder = new Encoder(RobotMap.RIGHT_ENC_IN, RobotMap.RIGHT_ENC_OUT,true, CounterBase.EncodingType.k4X);
         Encoder m_leftEncoder = new Encoder(RobotMap.LEFT_ENC_IN, RobotMap.LEFT_ENC_OUT, false, CounterBase.EncodingType.k4X);
 
 
@@ -458,12 +478,12 @@ public class Drivetrain implements Subsystem {
 
         SmartDashboard.putNumber("Enc In ticks", getEncInTicks());
 
-//        SmartDashboard.putNumber("Right Motor 1", rightMotors.get(0).getMotorOutputPercent());
-//        SmartDashboard.putNumber("Right Motor 2", rightMotors.get(1).getMotorOutputPercent());
-//
-//        SmartDashboard.putNumber("Left Motor 1", leftMotors.get(0).getMotorOutputPercent());
-//        SmartDashboard.putNumber("Left Motor 2", leftMotors.get(1).getMotorOutputPercent());
-//        SmartDashboard.putNumber("Left Motor 3", leftMotors.get(2).getMotorOutputPercent());
+        SmartDashboard.putNumber("Right Motor 1", rightMotors.get(0).getMotorOutputPercent());
+        SmartDashboard.putNumber("Right Motor 2", rightMotors.get(1).getMotorOutputPercent());
+
+        SmartDashboard.putNumber("Left Motor 1", leftMotors.get(0).getMotorOutputPercent());
+        SmartDashboard.putNumber("Left Motor 2", leftMotors.get(1).getMotorOutputPercent());
+
 
 
        //SmartDashboard.putNumber("Angle Adjusment", tx);

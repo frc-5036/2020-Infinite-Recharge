@@ -1,18 +1,21 @@
-package frc.robot.commands.intake;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.Intake;
+import frc.robot.OI;
+import frc.robot.subsystems.Shooter;
 
 import java.util.Set;
 
-public class RunIntake implements Command {
-    private final Intake intake;
+public class ManualShooter implements Command {
+    private final Shooter shooter;
+    private final OI oi;
     private final Set<Subsystem> subsystems;
 
-    public RunIntake(Intake intake) {
-        this.intake = intake;
-        this.subsystems = Set.of(intake);
+    public ManualShooter(Shooter shooter, OI oi) {
+        this.shooter = shooter;
+        this.oi = oi;
+        this.subsystems = Set.of(this.shooter);
     }
 
     @Override
@@ -23,8 +26,7 @@ public class RunIntake implements Command {
     @Override
     public void execute()
     {
-        intake.Run(0.0);
-        intake.intakeOut();
+        shooter.setPower(oi.getManualShooter());
     }
 
     @Override

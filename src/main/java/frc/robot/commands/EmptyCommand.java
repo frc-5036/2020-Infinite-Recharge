@@ -2,14 +2,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.Limelight;
 
 import java.util.Set;
 
 public class EmptyCommand implements Command {
     private final Set<Subsystem> subsystems;
+    private final Limelight limelight;
 
-    public EmptyCommand() {
-        this.subsystems = Set.of();
+    public EmptyCommand(Limelight limelight) {
+        this.limelight = limelight;
+        this.subsystems = Set.of(limelight);
     }
 
     @Override
@@ -18,7 +21,8 @@ public class EmptyCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public void execute()
+    {
 
     }
 

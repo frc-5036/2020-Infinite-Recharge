@@ -28,7 +28,7 @@ public class controllerButtons
     }
     public double getRightAxisX()
     {
-        return -this.joystick.getRawAxis(4);
+        return this.joystick.getRawAxis(4);
     }
 
     public double getLeftAxisY()

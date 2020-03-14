@@ -10,12 +10,10 @@ import java.util.Set;
 public class ClimbingCommand implements Command {
     private final Climber climber;
     private final Set<Subsystem> subsystems;
-    private final OperatorController oi;
 
-    public ClimbingCommand(Climber climber, OperatorController oi) {
+    public ClimbingCommand(Climber climber) {
         this.climber = climber;
         this.subsystems = Set.of(climber);
-        this.oi = oi;
     }
 
     @Override
@@ -26,14 +24,8 @@ public class ClimbingCommand implements Command {
     @Override
     public void execute()
     {
-        if (oi.getClimbingBtn())
-        {
-            climber.climbUp(-0.8);
-        }
-        else
-        {
-            climber.climbUp(0);
-        }
+        System.out.println("From climbing command");
+        climber.goUp();
     }
 
     @Override
@@ -43,8 +35,9 @@ public class ClimbingCommand implements Command {
     }
 
     @Override
-    public void end(boolean interrupted) {
-
+    public void end(boolean interrupted)
+    {
+        climber.goDown();
     }
 
     @Override

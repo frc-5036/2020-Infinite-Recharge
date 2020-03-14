@@ -1,35 +1,46 @@
-package frc.robot.commands.intake;
+package frc.robot.commands.autoCommands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Intake;
 
 import java.util.Set;
 
-public class RunIntake implements Command {
+public class IntakeForAuto implements Command {
     private final Intake intake;
+    private final double timeToStop;
     private final Set<Subsystem> subsystems;
+    Timer timer = new Timer();
 
-    public RunIntake(Intake intake) {
+    public IntakeForAuto(Intake intake, double timeToStop) {
         this.intake = intake;
-        this.subsystems = Set.of(intake);
+        this.timeToStop = timeToStop;
+        this.subsystems = Set.of(this.intake);
+
     }
 
     @Override
-    public void initialize() {
-
+    public void initialize()
+    {
+        timer.start();
     }
 
     @Override
     public void execute()
     {
-        intake.Run(0.0);
         intake.intakeOut();
+        intake.Run(0.7);
     }
 
     @Override
-    public boolean isFinished() {
+    public boolean isFinished()
+    {
         // TODO: Make this return true when this Command no longer needs to run execute()
+       if (timer.get() >= timeToStop)
+       {
+           return true;
+       }
         return false;
     }
 

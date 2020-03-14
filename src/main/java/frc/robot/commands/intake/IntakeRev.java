@@ -6,13 +6,13 @@ import frc.robot.subsystems.Intake;
 
 import java.util.Set;
 
-public class RunIntake implements Command {
+public class IntakeRev implements Command {
     private final Intake intake;
     private final Set<Subsystem> subsystems;
 
-    public RunIntake(Intake intake) {
+    public IntakeRev(Intake intake) {
         this.intake = intake;
-        this.subsystems = Set.of(intake);
+        this.subsystems = Set.of(this.intake);
     }
 
     @Override
@@ -23,8 +23,8 @@ public class RunIntake implements Command {
     @Override
     public void execute()
     {
-        intake.Run(0.0);
-        intake.intakeOut();
+        intake.Run(-0.6);
+
     }
 
     @Override

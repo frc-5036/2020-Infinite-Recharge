@@ -56,7 +56,7 @@ public class DefaultIntakeCommand implements Command{
 //            }
 
             intake.intakeOut();
-            intake.Run(0.8);
+            intake.Run(0.75);
 
     }
 
@@ -80,6 +80,6 @@ public class DefaultIntakeCommand implements Command{
     public void end(boolean interrupted)
     {
         intake.Stop();
-        intake.intakeIn();
+
     }
 }

@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     compressor = new Compressor();
-    compressor.start();
+    compressor.stop();
 
 
 
@@ -102,6 +102,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic()
   {
     CommandScheduler.getInstance().run();
+
   }
 
   @Override
@@ -110,7 +111,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    CommandScheduler.getInstance().run();
+
 
     if (m_autonomousCommand != null)
     {
@@ -126,7 +127,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic()
   {
-
+    CommandScheduler.getInstance().run();
   }
 
   @Override

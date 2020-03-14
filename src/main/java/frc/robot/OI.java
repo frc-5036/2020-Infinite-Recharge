@@ -54,7 +54,7 @@ public class OI implements DriveController, OperatorController
     @Override
     public double getManualShooter()
     {
-        return operatorController.getLeftAxisY() * 0.75;
+        return operatorController.getLeftAxisY();
     }
 
     @Override
@@ -66,5 +66,11 @@ public class OI implements DriveController, OperatorController
     public boolean getAutoAim() {
         return operatorController.getL1();
     }
+
+    public double getManualIndexer()
+    {
+        return operatorController.getRightAxisY();
+    }
+
 
 }

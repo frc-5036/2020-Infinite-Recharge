@@ -1,5 +1,7 @@
 package frc.robot.commands.limelight;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Drivetrain;
@@ -11,10 +13,12 @@ public class AutoAim implements Command {
     private final Drivetrain drivetrain;
     private final Limelight limelight;
     private final Set<Subsystem> subsystems;
+    PowerDistributionPanel pdp;
 
-    public AutoAim(Drivetrain drivetrain, Limelight limelight) {
+    public AutoAim(Drivetrain drivetrain, Limelight limelight, PowerDistributionPanel pdp) {
         this.drivetrain = drivetrain;
         this.limelight = limelight;
+        this.pdp = pdp;
         this.subsystems = Set.of(this.drivetrain, this.limelight);
     }
 
@@ -27,7 +31,13 @@ public class AutoAim implements Command {
     @Override
     public void execute()
     {
-        drivetrain.arcadeDrive(0, limelight.autoAim());
+        limelight.limelightLED(3);
+        double autoAimVal = limelight.autoAim();
+        double currentVoltage = pdp.getVoltage();
+        double autoAimValFilter = (12 / currentVoltage) * autoAimVal;
+
+        drivetrain.arcadeDrive(0, autoAimVal);
+        SmartDashboard.putNumber("Auto Aim", autoAimVal);
     }
 
     @Override
@@ -38,7 +48,7 @@ public class AutoAim implements Command {
 
     @Override
     public void end(boolean interrupted) {
-
+        limelight.limelightLED(1);
     }
 
     @Override

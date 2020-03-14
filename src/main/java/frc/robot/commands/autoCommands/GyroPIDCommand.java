@@ -35,8 +35,10 @@ public class GyroPIDCommand implements Command {
     @Override
     public void execute()
     {
-        double currentError = target - pid.getOutput(drivetrain.getGyroPitch());
-        drivetrain.arcadeDrive(0, currentError);
+        double currentError = target - drivetrain.getGyroYaw();
+        double output = pid.getOutput(currentError) * 0.75;
+        drivetrain.arcadeDrive(0, output);
+        System.out.println("From Gyro Pid, Error: " + currentError + ", Output: " + output);
     }
 
     @Override
@@ -62,6 +64,6 @@ public class GyroPIDCommand implements Command {
 
     @Override
     public Set<Subsystem> getRequirements() {
-        return this.subsystems;
+        return Set.of(drivetrain);
     }
 }

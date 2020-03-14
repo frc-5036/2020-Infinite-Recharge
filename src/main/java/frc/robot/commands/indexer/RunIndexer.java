@@ -2,12 +2,13 @@ package frc.robot.commands.indexer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
-
-import java.sql.Time;
+import frc.robot.subsystems.Shooter;
 
 
 public class RunIndexer extends CommandBase {
     private final Indexer indexer;
+    private final Shooter shooter;
+    private final double RPM_COMPENSATION = 3300;
     private double startTime;
     private boolean isRunningBackwards;
     private final double timeRunningForward = 500;
@@ -15,8 +16,9 @@ public class RunIndexer extends CommandBase {
     private final double clockCycle = timeRunningBackward + timeRunningForward;
 
 
-    public RunIndexer(Indexer indexer) {
+    public RunIndexer(Indexer indexer, Shooter shooter) {
         this.indexer = indexer;
+        this.shooter = shooter;
         addRequirements(indexer);
     }
 
@@ -43,7 +45,17 @@ public class RunIndexer extends CommandBase {
 //        {
 //            indexer.runIndexer(-0.5,-0.35);
 //        }
-        indexer.runIndexer(0.9,0.5,0.8);
+
+        if(shooter.getRPM() > RPM_COMPENSATION )
+        {
+            indexer.runIndexer(0.6,0.5,0.5,0.5);
+        }
+        else
+        {
+            indexer.stopIndexer();
+        }
+        //indexer.runIndexer(0.4,0.3,0.5,0.5);
+
     }
 
     @Override

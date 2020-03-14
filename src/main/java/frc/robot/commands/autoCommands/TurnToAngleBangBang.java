@@ -43,7 +43,7 @@ public class TurnToAngleBangBang implements Command {
     public boolean isFinished()
     {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        if( (currentAngle - ANGLE_TOLERANCE) < desiredAngle || (currentAngle + ANGLE_TOLERANCE) > desiredAngle)
+        if( currentAngle > desiredAngle )
         {
             return true;
         }

@@ -20,7 +20,8 @@ import java.util.List;
 public class Indexer implements Subsystem {
 
     VictorSP topRoller, bottomRoller;
-    IMotorController indexer1, indexer2;
+    IMotorController indexer1;
+    VictorSP indexer2;
 
     double getCurrentTime;
 
@@ -29,7 +30,7 @@ public class Indexer implements Subsystem {
         updateSmartdashboard();
     }
 
-    public Indexer(VictorSP topRoller,IMotorController indexer1,  IMotorController indexer2, VictorSP bottomRoller)
+    public Indexer(VictorSP topRoller,  VictorSP indexer2, IMotorController indexer1, VictorSP bottomRoller)
     {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor  or in the robot coordination class, such as RobotContainer.
@@ -47,27 +48,25 @@ public class Indexer implements Subsystem {
         VictorSP singleShaftMotor = new VictorSP(RobotMap.INDEXER_ROLLER);
         VictorSP bottomConveyorRoller = new VictorSP(RobotMap.BOTTOM_ROLLER);
         IMotorController frontIndexer1 = new TalonSRX(RobotMap.INDEXER_CONVEYOR);
-        IMotorController frontIndexer2 = new VictorSPX(RobotMap.INDEXER_CONVEYOR2);
+        VictorSP frontIndexer2 = new VictorSP(RobotMap.INDEXER_CONVEYOR2);
 
         frontIndexer2.setInverted(true);
         bottomConveyorRoller.setInverted(true);
-
-
         singleShaftMotor.setInverted(true);
 
-        return new Indexer(singleShaftMotor, frontIndexer1,frontIndexer2, bottomConveyorRoller);
+        return new Indexer(singleShaftMotor, frontIndexer2, frontIndexer1, bottomConveyorRoller);
     }
 
-    public void runIndexer (double leftSidePower, double rightSidePower, double power)
+    public void runIndexer (double leftSidePower, double rightSidePower, double topRollerPower, double bottomRollerPower)
     {
-       topRoller.set(power);
+       topRoller.set(topRollerPower);
        indexer1.set(ControlMode.PercentOutput,leftSidePower);
-       indexer2.set(ControlMode.PercentOutput, rightSidePower);
-       bottomRoller.set(power);
+       indexer2.set(rightSidePower);
+       bottomRoller.set(bottomRollerPower);
     }
     public void stopIndexer ()
     {
-       runIndexer(0,0,0);
+       runIndexer(0,0,0,0);
     }
 
 //    public void pulser()
@@ -84,7 +83,7 @@ public class Indexer implements Subsystem {
         SmartDashboard.putNumber("Indexer Sanity Check", System.currentTimeMillis());
         SmartDashboard.putNumber("Indexer top roller" , topRoller.get());
         SmartDashboard.putNumber("Indexer bottom roller", bottomRoller.get());
-        //SmartDashboard.putNumber("Indexer side rollers", indexer1.getMotorOutputPercent());
+        SmartDashboard.putNumber("Indexer side rollers", indexer1.getMotorOutputPercent());
         //SmartDashboard.putNumber("Indexer side rollers 2", indexer2.getMotorOutputPercent());
 
 

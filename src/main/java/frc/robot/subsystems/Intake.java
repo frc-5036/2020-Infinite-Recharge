@@ -36,7 +36,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 	 	{
 			 // TODO Auto-generated method stub
 			 updateSmartDashboard();
-			 Run(0.2);
 	 	}
 	 
 	  public Intake(List<SpeedController> intakeMotor, DoubleSolenoid intakePiston, DigitalInput buttonSensor)
@@ -55,7 +54,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 	    //DigitalInput Breaker = new DigitalInput(RobotMap.BEAM_BREAKER);
 	    DigitalInput button = new DigitalInput(RobotMap.BUTTON_SENSOR);
 
-
+		intake.setInverted(true);
 
 
 	    return new Intake(Arrays.asList(intake, intake2), intakePiston, button);

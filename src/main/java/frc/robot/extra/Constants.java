@@ -26,6 +26,8 @@ public final class Constants
     public static final double MAX_SPEED = 0; //Needs in meters per seconds
     public static final double MAX_ANGULAR_SPEED = 0; //Needs in one rotation per second
 
+    public static final double SHOOTER_RPM = 3500;
+
     //Robot Characterization
     public static final double kS = 0;
     public static final double kV = 0;
@@ -37,12 +39,19 @@ public final class Constants
 
 
     //PID Drivetrain Constants
-    public static final double kP_DRIVE_FORWARD = 0;
-    public static final double kD_DRIVE_FORWARD = 0;
+    public static final double kP_DRIVE_FORWARD = 0.22;
+    public static final double kD_DRIVE_FORWARD = 5.5;
 
-    public static final double kP_DRIVE_ROTATE = 0;
-    public static final double kD_DRIVE_ROTATE = 0;
+    public static final double kP_DRIVE_ROTATE = 0.02;
+    public static final double kD_DRIVE_ROTATE = 0.53;
 
+
+    //6 Ball Auto Value
+    public static final double STRAIGHT_VALUE = 20;
+    public static final double TURN_AFTER_STRAIGHT = 11;
+    public static final double STRAIGHT_AFTER_TURNING = 40;
+    public static final double TURN_FOR_TRENCH = 10;
+    public static final double STRAIGHT_IN_TRENCH = 40;
 
 
 }

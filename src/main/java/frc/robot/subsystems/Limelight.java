@@ -11,7 +11,7 @@ public class Limelight implements Subsystem {
     private final NetworkTable m_limelight;
     private double tx, ty, tv;
 
-    private final double kP = 0.1;
+    private final double kP = 0.03;
 
     private final double AIM_THRESHOLD = 1.0;
 
@@ -31,6 +31,9 @@ public class Limelight implements Subsystem {
         //SmartDashboard.putNumber("limelight X", getTX());
         //SmartDashboard.putNumber("limelight Y", ty);
         //SmartDashboard.putNumber("Target Found", tv);
+
+        streamSetup(2);
+        limelightLED(1);
     }
 
     public double getTX() {
@@ -64,6 +67,16 @@ public class Limelight implements Subsystem {
 
         return rotation;
     }
+    public void limelightLED (int value)
+    {
+        m_limelight.getEntry("ledMode").setNumber(value);
+    }
+    public void streamSetup(int value)
+    {
+        m_limelight.getEntry("stream").setNumber(value);
+    }
+
+
 
 
 }

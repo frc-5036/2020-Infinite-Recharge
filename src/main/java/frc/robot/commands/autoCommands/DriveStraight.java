@@ -17,7 +17,7 @@ public class DriveStraight implements Command
     PID pid;
     double target;
     int counter;
-    final double EPSILON = 2.5;
+    final double EPSILON = 0.5;
 
     public DriveStraight(Drivetrain drivetrain, double target)
     {
@@ -38,9 +38,13 @@ public class DriveStraight implements Command
     @Override
     public void execute()
     {
-        double currentError = target - pid.getOutput(drivetrain.getAverageDistace());
-        double gyroCorrection = -Constants.kP_DRIVE_ROTATE * drivetrain.getGyroPitch();
-        drivetrain.arcadeDrive(currentError, gyroCorrection);
+        //double currentError = target - pid.getOutput(drivetrain.getRightEncoderDistance());
+        double currentError = target - drivetrain.getRightEncoderDistance();
+        double output = pid.getOutput(currentError) * 0.25;
+        double gyroCorrection = -Constants.kP_DRIVE_ROTATE * drivetrain.getGyroYaw();
+        drivetrain.arcadeDrive(output, gyroCorrection);
+        System.out.println("From Gyro Pid, Error: " + currentError + ", Output: " + output);
+
 
     }
 
@@ -48,7 +52,7 @@ public class DriveStraight implements Command
     public boolean isFinished()
     {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        double currentError = Math.abs(target - drivetrain.getAverageDistace());
+        double currentError = Math.abs(target - drivetrain.getRightEncoderDistance());
         if(currentError < EPSILON)
         {
             counter++;

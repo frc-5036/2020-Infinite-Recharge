@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,55 +26,32 @@ public class Climber implements Subsystem {
   // here. Call these from Commands.
 
 
-  List<SpeedController> climbMotors;
+  Relay relay;
 
   @Override
-  public void periodic() {
-    updateShuffle();
-  }
-
-  public Climber(List<SpeedController> climbMotors)
+  public void periodic()
   {
-    this.climbMotors = climbMotors;
-
+    //updateShuffle();
   }
 
-  public static Climber createForRobot()
+  public Climber()
   {
-    VictorSP climberMotor1 = new VictorSP (RobotMap.VICTOR_CLIMBER_MOTOR_1);
-    VictorSP climberMotor2 = new VictorSP (RobotMap.VICTOR_CLIMBER_MOTOR_2);
-
-    climberMotor2.setInverted(true);
-
-    return new Climber(Arrays.asList(climberMotor2));
+    relay = new Relay(RobotMap.RELAY);
   }
 
-  public void climbUp(double power)
+  public void goUp()
   {
-    for(SpeedController sc : climbMotors)
-      {
-        sc.set(power);
-      }
+    relay.set(Relay.Value.kForward);
+  }
+  public void goDown()
+  {
+    relay.set(Relay.Value.kOff);
   }
 
-  public void climbDown (double power)
-  {
-    for(SpeedController sc : climbMotors)
-      {
-        sc.set(power);
-      }
-  }
 
-  public void stop ()
-  {
-    for(SpeedController sc : climbMotors)
-    {
-      sc.set(0);
-    }
-  }
+
   public void updateShuffle()
   {
-    SmartDashboard.putNumber("Climber", climbMotors.get(0).get());
     //SmartDashboard.putNumber("Climber", climbMotors.get(1).get());
   }
 

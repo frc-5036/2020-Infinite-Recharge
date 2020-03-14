@@ -71,10 +71,13 @@ public class Shooter implements Subsystem {
         shooter3.setNeutralMode(NeutralMode.Coast);
         shooter3.setNeutralMode(NeutralMode.Coast);
 
-        shooter1.configContinuousCurrentLimit(20);
-        shooter2.configContinuousCurrentLimit(20);
+        shooter1.configOpenloopRamp(1);
+        shooter2.configOpenloopRamp(1);
 
-        shooter1.configPeakCurrentLimit(40);
+//        shooter1.configContinuousCurrentLimit(30);
+//        shooter2.configContinuousCurrentLimit(30);
+//
+//        shooter1.configPeakCurrentLimit(40);
 
 
         DigitalInput breaker = new DigitalInput(RobotMap.SHOOTER_BEAM_BREAKER);
@@ -129,11 +132,11 @@ public class Shooter implements Subsystem {
 
     public void updateSmartdashboard()
     {
-//        SmartDashboard.getBoolean("Shooter Beam Breaker", getBeamBreaker());
-//        SmartDashboard.putNumber("Shooter 1", talonWthEnc.getMotorOutputPercent());
-//        SmartDashboard.putNumber("Shooter 2", shooterMotors.get(0).getMotorOutputPercent());
-//        SmartDashboard.putNumber("Shooter 3", shooterMotors.get(1).getMotorOutputPercent());
-//        SmartDashboard.putNumber("Shooter 4", shooterMotors.get(2).getMotorOutputPercent());
+        SmartDashboard.getBoolean("Shooter Beam Breaker", getBeamBreaker());
+        SmartDashboard.putNumber("Shooter 1", talonWthEnc.getMotorOutputPercent());
+        SmartDashboard.putNumber("Shooter 2", shooterMotors.get(0).getMotorOutputPercent());
+        SmartDashboard.putNumber("Shooter 3", shooterMotors.get(1).getMotorOutputPercent());
+        SmartDashboard.putNumber("Shooter 4", shooterMotors.get(2).getMotorOutputPercent());
         SmartDashboard.putNumber("Encoder Velocity", getRPM());
 
     }
