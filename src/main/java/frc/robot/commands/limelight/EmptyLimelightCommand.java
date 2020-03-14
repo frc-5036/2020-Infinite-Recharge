@@ -1,18 +1,18 @@
-package frc.robot.commands.intake;
+package frc.robot.commands.limelight;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 
 import java.util.Set;
 
-public class IntakeRev implements Command {
-    private final Intake intake;
+public class EmptyLimelightCommand implements Command {
     private final Set<Subsystem> subsystems;
+    private final Limelight limelight;
 
-    public IntakeRev(Intake intake) {
-        this.intake = intake;
-        this.subsystems = Set.of(this.intake);
+    public EmptyLimelightCommand(Limelight limelight) {
+        this.limelight = limelight;
+        this.subsystems = Set.of(limelight);
     }
 
     @Override
@@ -23,7 +23,6 @@ public class IntakeRev implements Command {
     @Override
     public void execute()
     {
-        intake.Run(-0.6);
 
     }
 

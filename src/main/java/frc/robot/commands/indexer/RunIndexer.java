@@ -8,7 +8,7 @@ import frc.robot.subsystems.Shooter;
 public class RunIndexer extends CommandBase {
     private final Indexer indexer;
     private final Shooter shooter;
-    private final double RPM_COMPENSATION = 3300;
+    private final double RPM_TO_RUN_INDEXER = 7000;
     private double startTime;
     private boolean isRunningBackwards;
     private final double timeRunningForward = 500;
@@ -32,30 +32,14 @@ public class RunIndexer extends CommandBase {
     @Override
     public void execute()
     {
-
-        double currentTime = System.currentTimeMillis() - startTime;
-        double timeInClockCycle = currentTime % clockCycle;
-        final boolean pulserOFF = false;
-        if(timeInClockCycle < timeRunningForward && pulserOFF )
+        if(shooter.getRPM() > RPM_TO_RUN_INDEXER )
         {
-
-        }
-
-//        else
-//        {
-//            indexer.runIndexer(-0.5,-0.35);
-//        }
-
-        if(shooter.getRPM() > RPM_COMPENSATION )
-        {
-            indexer.runIndexer(0.6,0.5,0.5,0.5);
+            indexer.runIndexer(0.6,0.5,0.5);
         }
         else
         {
             indexer.stopIndexer();
         }
-        //indexer.runIndexer(0.4,0.3,0.5,0.5);
-
     }
 
     @Override

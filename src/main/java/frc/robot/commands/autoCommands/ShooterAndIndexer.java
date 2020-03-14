@@ -9,23 +9,27 @@ import frc.robot.subsystems.Shooter;
 
 import java.util.Set;
 
-public class ShooterAndIndexer implements Command {
+public class ShooterAndIndexer implements Command
+{
     private final Indexer indexer;
     private final Shooter shooter;
     private final Intake intake;
     private double timeToEndCommand;
     private final Set<Subsystem> subsystems;
     Timer timer = new Timer();
+    private final double MAX_POWER = 0.85;
+    private final double RPM_TO_START_INDEXER_AND_INTAKE = 7000;
+    private final double DESIRED_RPM = 7500;
 
 
-    public ShooterAndIndexer(Indexer indexer, Shooter shooter, Intake intake, double timeToEndCommand) {
+    public ShooterAndIndexer(Indexer indexer, Shooter shooter, Intake intake, double timeToEndCommand)
+    {
         this.indexer = indexer;
         this.shooter = shooter;
         this.intake = intake;
         this.timeToEndCommand = timeToEndCommand;
         this.subsystems = Set.of(this.indexer, this.shooter,this.intake);
         timer.reset();
-
     }
 
     @Override
@@ -40,13 +44,13 @@ public class ShooterAndIndexer implements Command {
         intake.intakeOut();
 
 
-        if(shooter.getRPM() > 7500)
+        if(shooter.getRPM() > DESIRED_RPM)
         {
             shooter.setPower(0);
 
-            if(shooter.getRPM() > 6500)
+            if(shooter.getRPM() > RPM_TO_START_INDEXER_AND_INTAKE)
             {
-                indexer.runIndexer(0.9,0.5,0.5,0.5);
+                indexer.runIndexer(0.6,0.5,0.5);
                 intake.Run(0.8);
             }
             else
@@ -55,12 +59,14 @@ public class ShooterAndIndexer implements Command {
                 intake.Stop();
             }
         }
-        else if(shooter.getRPM() < 7500)
+
+        else if(shooter.getRPM() < DESIRED_RPM)
         {
-            shooter.setPower(0.85);
-            if(shooter.getRPM() > 7000)
+            shooter.setPower(MAX_POWER);
+
+            if(shooter.getRPM() > RPM_TO_START_INDEXER_AND_INTAKE)
             {
-                indexer.runIndexer(0.9,0.5,0.5,0.5);
+                indexer.runIndexer(0.6,0.5,0.5);
                 intake.Run(0.8);
             }
             else
@@ -69,9 +75,6 @@ public class ShooterAndIndexer implements Command {
                 intake.Stop();
             }
         }
-
-
-
     }
 
     @Override
@@ -92,7 +95,9 @@ public class ShooterAndIndexer implements Command {
     }
 
     @Override
-    public Set<Subsystem> getRequirements() {
+    public Set<Subsystem> getRequirements()
+    {
         return this.subsystems;
     }
+
 }

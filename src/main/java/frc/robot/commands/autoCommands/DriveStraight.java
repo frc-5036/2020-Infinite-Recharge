@@ -38,14 +38,10 @@ public class DriveStraight implements Command
     @Override
     public void execute()
     {
-        //double currentError = target - pid.getOutput(drivetrain.getRightEncoderDistance());
         double currentError = target - drivetrain.getRightEncoderDistance();
         double output = pid.getOutput(currentError) * 0.25;
         double gyroCorrection = -Constants.kP_DRIVE_ROTATE * drivetrain.getGyroYaw();
         drivetrain.arcadeDrive(output, gyroCorrection);
-        System.out.println("From Gyro Pid, Error: " + currentError + ", Output: " + output);
-
-
     }
 
     @Override

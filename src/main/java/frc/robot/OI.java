@@ -8,7 +8,7 @@
 package frc.robot;
 
 import frc.robot.extra.Util;
-import frc.robot.extra.controllerButtons;
+import frc.robot.extra.ControllerButtons;
 import frc.robot.customInterfaces.DriveController;
 import frc.robot.customInterfaces.OperatorController;
 
@@ -17,8 +17,8 @@ import frc.robot.customInterfaces.OperatorController;
  */
 public class OI implements DriveController, OperatorController
 {
-    controllerButtons driverController = new controllerButtons(RobotMap.DRIVER_CONTROLLER);
-    controllerButtons operatorController = new controllerButtons(RobotMap.OPERATOR_CONTROLLER);
+    ControllerButtons driverController = new ControllerButtons(RobotMap.DRIVER_CONTROLLER);
+    ControllerButtons operatorController = new ControllerButtons(RobotMap.OPERATOR_CONTROLLER);
 
 
     public OI()

@@ -26,7 +26,7 @@ public class IndexerOnJoystick implements Command {
     @Override
     public void execute()
     {
-        indexer.runIndexer(0,oi.getManualIndexer(),0,0);
+        indexer.runIndexer(0,oi.getManualIndexer(),0);
     }
 
     @Override

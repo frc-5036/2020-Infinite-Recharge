@@ -16,7 +16,8 @@ import frc.robot.RobotMap;
 import java.util.Arrays;
 import java.util.List;
 
-public class Shooter implements Subsystem {
+public class Shooter implements Subsystem
+{
 
     List<IMotorController> shooterMotors;
     DigitalInput beamBreaker;
@@ -24,7 +25,11 @@ public class Shooter implements Subsystem {
 
     double desiredRPM = 0;
 
-
+    @Override
+    public void periodic()
+    {
+        updateSmartdashboard();
+    }
 
     public Shooter(List<IMotorController> shooterMotors, TalonSRX talonWthEnc, DigitalInput beamBreaker) {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
@@ -35,12 +40,6 @@ public class Shooter implements Subsystem {
         this.talonWthEnc = talonWthEnc;
 
         talonWthEnc.setSelectedSensorPosition(0);
-    }
-
-    @Override
-    public void periodic() 
-    {
-        updateSmartdashboard();    
     }
 
     public static Shooter createForRobot()
@@ -71,6 +70,7 @@ public class Shooter implements Subsystem {
         shooter3.setNeutralMode(NeutralMode.Coast);
         shooter3.setNeutralMode(NeutralMode.Coast);
 
+        //Shooter ramping to prevent battery brownout
         shooter1.configOpenloopRamp(1);
         shooter2.configOpenloopRamp(1);
 
@@ -84,6 +84,7 @@ public class Shooter implements Subsystem {
 
         return new Shooter(Arrays.asList(shooter2,shooter3,shooter4), shooter1, breaker);
     }
+
     public void setPower(double power)
     {
         talonWthEnc.set(ControlMode.PercentOutput, power);
@@ -93,6 +94,7 @@ public class Shooter implements Subsystem {
             sc.set(ControlMode.PercentOutput, power);
         }
     }
+
     public void stopShooters()
     {
         setPower(0);
@@ -102,6 +104,7 @@ public class Shooter implements Subsystem {
     {
         this.desiredRPM = desiredRPM;
     }
+
     public double getDesiredRPM()
     {
         return desiredRPM;
@@ -111,24 +114,27 @@ public class Shooter implements Subsystem {
     {
         return beamBreaker.get();
     }
+
+    //Getting velocity from the encoder
     public double getRPM()
     {
         return -(talonWthEnc.getSelectedSensorVelocity()/6130.2)*600;
     }
+
     public double getPostionEnc()
     {
         return talonWthEnc.getSelectedSensorPosition();
     }
+
     public void resetPostionEnc()
     {
         talonWthEnc.setSelectedSensorPosition(0);
     }
+
     public double getMotorPower()
     {
         return talonWthEnc.getMotorOutputPercent();
     }
-
-
 
     public void updateSmartdashboard()
     {

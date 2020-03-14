@@ -76,8 +76,44 @@ public class Limelight implements Subsystem {
         m_limelight.getEntry("stream").setNumber(value);
     }
 
-
-
-
 }
+
+//    public void gettingInRange(boolean button)
+//    {
+//        double currentDistance = estimateDistance();
+//        double forwardAdjustment = 0;
+//
+//        if (button)
+//        {
+//            double distanceError = desiredDistance - currentDistance;
+//            forwardAdjustment = kP_forward * distanceError;
+//        }
+//        double newForward = forwardAdjustment;
+//    }
+
+//    public void aimingAndGettingInRange(boolean button)
+//    {
+//        double headingError = x; //Might need to change to Negative
+//        double rotationAdjustment = 0.0;
+//        double currentDistance = estimateDistance();
+//        double forwardAdjustment = 0;
+//
+//        if(button)
+//        {
+//            if (x < ANGLE_TOLERANCE) //Might not need Abs
+//            {
+//                rotationAdjustment = headingError * kP_rotation + minCommmand;
+//            }
+//            else if (x > ANGLE_TOLERANCE)
+//            {
+//                rotationAdjustment = headingError * kP_rotation - minCommmand;
+//            }
+//
+//            double distanceError = desiredDistance - currentDistance;
+//            forwardAdjustment = kP_forward * distanceError;
+//        }
+//        double newRotation = rotationAdjustment;
+//        double newForward = forwardAdjustment;
+//
+//    }
 

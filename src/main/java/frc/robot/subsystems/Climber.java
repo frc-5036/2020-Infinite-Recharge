@@ -25,7 +25,6 @@ public class Climber implements Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-
   Relay relay;
 
   @Override

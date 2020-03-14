@@ -23,7 +23,7 @@ public class RunIntake implements Command {
     @Override
     public void execute()
     {
-        intake.Run(0.0);
+        intake.Run(0.6);
         intake.intakeOut();
     }
 

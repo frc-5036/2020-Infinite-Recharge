@@ -27,7 +27,6 @@ public class ArcadeDrive extends CommandBase {
    this.drivetrain = drivetrain;
    this.oi = oi;
    addRequirements(drivetrain);
-   System.out.println("Coming from DrivetrainCommand Constuctor");
    // Use addRequirements() here to declare subsystem dependencies.
  }
 
@@ -35,14 +34,14 @@ public class ArcadeDrive extends CommandBase {
  @Override
  public void initialize()
  {
-   System.out.println("Coming from DrivetrainCommand");
+
  }
 
  // Called every time the scheduler runs while the command is scheduled.
  @Override
  public void execute()
  {
-  drivetrain.arcadeDrive(0.50, 0);
+   drivetrain.arcadeDrive(0.50, 0);
  }
 
  // Called once the command ends or is interrupted.

@@ -2,11 +2,11 @@ package frc.robot.extra;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-public class controllerButtons
+public class ControllerButtons
 {
     private Joystick joystick;
 
-    public controllerButtons(int portNumber)
+    public ControllerButtons(int portNumber)
     {
         this.joystick = new Joystick(portNumber);
     }

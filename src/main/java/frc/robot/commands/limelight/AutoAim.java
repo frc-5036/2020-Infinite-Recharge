@@ -34,7 +34,7 @@ public class AutoAim implements Command {
         limelight.limelightLED(3);
         double autoAimVal = limelight.autoAim();
         double currentVoltage = pdp.getVoltage();
-        double autoAimValFilter = (12 / currentVoltage) * autoAimVal;
+        double autoAimValFilter = (12 / currentVoltage) * autoAimVal; //Voltage Compensation because not all batteries are the same
 
         drivetrain.arcadeDrive(0, autoAimVal);
         SmartDashboard.putNumber("Auto Aim", autoAimVal);

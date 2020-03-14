@@ -46,22 +46,9 @@ public class Drivetrain implements Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    private double desiredDistance;
-
-    private double kP_rotation = 0.75; //Proportional Gain  Needs to be toned
-    private double kP_forward = 0.0; //For forward
-    private double minCommmand = 0.0; //Needs to be toned
-    private final double ANGLE_TOLERANCE = 2.0; //Needs to be toned
-
-//   Limelight limelight;
-//   double tx;
-//   double ty;
-
     // Speed Controllers
     List<IMotorController> rightMotors;
     List<IMotorController> leftMotors;
-
-
 
     private static double kP;
     private static double kI;
@@ -74,7 +61,6 @@ public class Drivetrain implements Subsystem {
     private static final double TURN_SENS = 1.0;
 
     // Sensors
-
     Encoder rightEncoder;
     Encoder leftEncoder;
     AHRS gyro;
@@ -110,7 +96,6 @@ public class Drivetrain implements Subsystem {
         leftEncoder.setDistancePerPulse(2 * Math.PI * Constants.WHEEl_RADIUS / Constants.ENCODER_RESOLUTION);
         rightEncoder.setDistancePerPulse(2 * Math.PI * Constants.WHEEl_RADIUS / Constants.ENCODER_RESOLUTION);
 
-
         this.gyro = gyro;
 
         kinematics = new DifferentialDriveKinematics(Constants.TRACK_WIDTH);
@@ -124,21 +109,8 @@ public class Drivetrain implements Subsystem {
         leftPIDController = new PIDController(kP, kI, kD);
         rightPIDController = new PIDController(kP, kI, kD);
 
-
-
-
-
-        desiredDistance = 0.0; //Needs to be changed
-
-//        limelight = new Limelight();
-//        tx = limelight.getTX();
-//        ty = limelight.getTY();
-
-
-        setBrakeMode();
         gyroReset();
         encoderReset();
-
     }
 
     public static Drivetrain createForRobot() 
@@ -146,14 +118,8 @@ public class Drivetrain implements Subsystem {
         TalonSRX rightFront = new TalonSRX(RobotMap.RIGHT_FRONT_DRIVE);
         TalonSRX leftFront = new TalonSRX(RobotMap.LEFT_FRONT_DRIVE);
 
-//        TalonSRX rightMiddle = new TalonSRX(RobotMap.RIGHT_MIDDLE_DRIVE);
-//        VictorSPX leftMiddle = new VictorSPX(RobotMap.LEFT_MIDDLE_DRIVE);
-
         TalonSRX rightBack = new TalonSRX(RobotMap.RIGHT_BACK_DRIVE);
         TalonSRX leftBack = new TalonSRX(RobotMap.LEFT_BACK_DRIVE);
-
-
-        //Setting Right to Reverse
 
         rightBack.configFactoryDefault();
         rightFront.configFactoryDefault();
@@ -170,13 +136,13 @@ public class Drivetrain implements Subsystem {
 //        leftBack.configOpenloopRamp(0.05);
 //        leftFront.configOpenloopRamp(0.05);
 
-        leftBack.setInverted(false);
-        leftFront.setInverted(false);
 
+        //Setting Right to Reverse and for safety setting left to false
         rightBack.setInverted(true);
         rightFront.setInverted(true);
 
-
+        leftBack.setInverted(false);
+        leftFront.setInverted(false);
 
         //Sensors
         AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -205,12 +171,10 @@ public class Drivetrain implements Subsystem {
         setMotors(power, leftMotors);
     }
 
-
     private void setRightMotors(double power)
     {
         setMotors(power, rightMotors);
     }
-
 
     public void arcadeDrive(double forward, double rotation)
     {
@@ -218,14 +182,12 @@ public class Drivetrain implements Subsystem {
         setRightMotors(forward - rotation);
     }
 
-
     public void curvatureDrive(double forward, double rotation, boolean isQuickTurn)
     {
         rotation = Util.handleDeadband(rotation, WHEEL_DEADBAND);
         forward = Util.handleDeadband(forward, THROTTLE_DEADBAND);
 
         double overPower;
-
         double angularPower;
 
         if(isQuickTurn)
@@ -280,8 +242,6 @@ public class Drivetrain implements Subsystem {
             rightMotors = -1.0;
         }
 
-
-
         setLeftMotors(leftMotors);
         setRightMotors(rightMotors);
     }
@@ -291,58 +251,41 @@ public class Drivetrain implements Subsystem {
         setRightMotors(0);
         setLeftMotors(0);
     }
-    private void setBrakeMode()
-    {
-        for (IMotorController sc: leftMotors)
-        {
-            sc.setNeutralMode(NeutralMode.Brake);
-        }
-        for (IMotorController sc: rightMotors)
-        {
-            sc.setNeutralMode(NeutralMode.Brake);
-        }
-    }
-    public void setCoastMode()
-    {
-        for (IMotorController sc: leftMotors)
-        {
-            sc.setNeutralMode(NeutralMode.Coast);
-        }
-        for (IMotorController sc: rightMotors)
-        {
-            sc.setNeutralMode(NeutralMode.Coast);
-        }
-    }
-
 
     //Path Finder Methods
     public DifferentialDriveWheelSpeeds getSpeeds()
     {
         return new DifferentialDriveWheelSpeeds(leftEncoder.getRate(), rightEncoder.getRate());
     }
+
     public SimpleMotorFeedforward getFeedforward()
     {
         return feedforward;
     }
+
     public PIDController getLeftPIDController()
     {
         return leftPIDController;
     }
+
     public PIDController getRightPIDController()
     {
         return rightPIDController;
     }
+
     public DifferentialDriveKinematics getKinematics()
     {
         return kinematics;
     }
+
     public Pose2d getPose()
     {
         return pose;
     }
-    public void setOutput(double rightVolts, double lefVolts) //Might be wrong (Double check)
+
+    public void setOutput(double rightVolts, double leftVolts) //Might be wrong (Double check)
     {
-        setLeftMotors(lefVolts/12);
+        setLeftMotors(leftVolts/12);
         setRightMotors(rightVolts / 12);
     }
 
@@ -352,41 +295,48 @@ public class Drivetrain implements Subsystem {
     {
         return Rotation2d.fromDegrees(-gyro.getAngle());
     }
+
     public void gyroReset()
     {
         gyro.reset();
     }
+
     public double getGyroRoll()
     {
         return gyro.getRoll();
     }
+
     public double getGyroPitch()
     {
         return gyro.getPitch();
     }
+
     public double getGyroYaw()
     {
         return gyro.getYaw();
     }
 
-
     public Encoder getRightEncoder()
     {
         return rightEncoder;
     }
+
     public Encoder getLeftEncoder()
     {
         return leftEncoder;
     }
+
     public void encoderReset()
     {
         leftEncoder.reset();
         rightEncoder.reset();
     }
+
     public double getRightEncoderDistance()
     {
         return rightEncoder.getRaw() / 75.4;
     }
+
     public double getLeftEncoderDistance()
     {
         return leftEncoder.getRaw() / 75.4;
@@ -396,77 +346,11 @@ public class Drivetrain implements Subsystem {
     {
         return (getLeftEncoderDistance() + getRightEncoderDistance()) / 2;
     }
+
     public double getEncInTicks()
     {
         return leftEncoder.get() + rightEncoder.get();
     }
-
-
-
-    public double aimingWithVision(double headingError)
-    {
-        double rotationAdjustment = 0.0;
-
-
-        if (headingError < ANGLE_TOLERANCE) //Might not need Abs
-        {
-            rotationAdjustment = headingError * kP_rotation;
-        }
-        else if (headingError > ANGLE_TOLERANCE)
-        {
-            rotationAdjustment = headingError * kP_rotation;
-        }
-        else {
-            rotationAdjustment = 0;
-        }
-
-        return rotationAdjustment;
-    }
-
-    public void aimTurn(double rotate)
-    {
-        System.out.println("auto aim");
-        arcadeDrive(0,rotate);
-    }
-
-//    public void gettingInRange(boolean button)
-//    {
-//        double currentDistance = estimateDistance();
-//        double forwardAdjustment = 0;
-//
-//        if (button)
-//        {
-//            double distanceError = desiredDistance - currentDistance;
-//            forwardAdjustment = kP_forward * distanceError;
-//        }
-//        double newForward = forwardAdjustment;
-//    }
-
-//    public void aimingAndGettingInRange(boolean button)
-//    {
-//        double headingError = x; //Might need to change to Negative
-//        double rotationAdjustment = 0.0;
-//        double currentDistance = estimateDistance();
-//        double forwardAdjustment = 0;
-//
-//        if(button)
-//        {
-//            if (x < ANGLE_TOLERANCE) //Might not need Abs
-//            {
-//                rotationAdjustment = headingError * kP_rotation + minCommmand;
-//            }
-//            else if (x > ANGLE_TOLERANCE)
-//            {
-//                rotationAdjustment = headingError * kP_rotation - minCommmand;
-//            }
-//
-//            double distanceError = desiredDistance - currentDistance;
-//            forwardAdjustment = kP_forward * distanceError;
-//        }
-//        double newRotation = rotationAdjustment;
-//        double newForward = forwardAdjustment;
-//
-//    }
 
     public void updateShuffleboard()
     {
@@ -483,21 +367,6 @@ public class Drivetrain implements Subsystem {
 
         SmartDashboard.putNumber("Left Motor 1", leftMotors.get(0).getMotorOutputPercent());
         SmartDashboard.putNumber("Left Motor 2", leftMotors.get(1).getMotorOutputPercent());
-
-
-
-       //SmartDashboard.putNumber("Angle Adjusment", tx);
-
-
-
-       
-        
     }
-
-
-
-    
-
-
 
 }

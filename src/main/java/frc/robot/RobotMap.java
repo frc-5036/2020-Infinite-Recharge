@@ -43,11 +43,9 @@ public class RobotMap
      public static final int RELAY = 0;
 
     //Indexer
-
-    public static final int INDEXER_ROLLER = 2; //Top roller
+    public static final int INDEXER_TOP_ROLLER =5;
     public static final int BOTTOM_ROLLER = 0;
-
-    public static final int INDEXER_CONVEYOR =5;
+    public static final int SIDE_INDEXER = 2;
     public static final int INDEXER_CONVEYOR2 = 4;
 
     //Shooter
