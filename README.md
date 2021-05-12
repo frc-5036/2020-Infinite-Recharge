@@ -4,7 +4,7 @@ Team 5036's 2020 FRC Robot code. The code is written in Java and is based off WP
 ### Highlights of the Code
 * Control Systems 
 
-  For the 2020 season, a [PID](https://github.com/frc-5036/2020-Infinite-Recharge/blob/master/src/main/java/frc/robot/extra/PID.java) system was used for the autonomous code. They were used to detect whether or not the robot had reached the targeted distance. Additionally, **Bang Bang** was used to check whether the shooting mechanism was up to speed or not. 
+  For the 2020 season, a [PID](https://github.com/frc-5036/2020-Infinite-Recharge/blob/master/src/main/java/frc/robot/extra/PID.java) system was used for the autonomous code. PID Control System was used to detect whether or not the robot had reached the target distance. Additionally, **Bang Bang Control System** was used to check whether the shooting mechanism was up to speed or not. 
 
 * Limelight-Based Vision System for Target Detection
 
