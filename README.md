@@ -21,3 +21,4 @@ Team 5036's 2020 FRC Robot code. The code is written in Java and is based off WP
 * LED Signals
 
   The LEDs provided crucial information, and depending the LED the driver got information on what is happening with the robot. For example, the LEDs would turn red if the Shooter has reached the optimal speed and is ready to shoot. Another example was that the colour for the LEDs would change based on how many balls are in the robot.  
+
