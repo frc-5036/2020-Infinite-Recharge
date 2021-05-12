@@ -1,5 +1,5 @@
 ## Source Code for FRC Team 5036 for The 2020-Infinite-Recharge Season 
-Team 5036's 2020 FRC Robot code. The code is written in Java and is based off WPILib's Java Control System. 
+Team 5036's 2020 FRC Robot code. The code is written in Java and is based off WPILib's Java Control System. One of the main goal this year was to automate as many tasks as possible so that the driver and the operator don't have to use brain power to do the tasks. 
 
 ### Highlights of the Code
 * Control Systems 
